@@ -4,7 +4,7 @@ type Props = {
   formPageType: "new" | "edit";
 };
 
-export const EventPageHeader: React.FC<Props> = ({ formPageType }) => {
+export const Header: React.FC<Props> = ({ formPageType }) => {
   const message =
     formPageType === "new" ? "新規イベント作成" : "イベント・メンバー編集";
   return (
