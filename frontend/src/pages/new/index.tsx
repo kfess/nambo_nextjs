@@ -1,12 +1,13 @@
 import React from "react";
+import { useRouter } from "next/router";
 import dayjs from "dayjs";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TermsLink } from "../../features/Terms/components/TermsLink";
 import { Header } from "../../features/Form/components/Header";
 import {
-  createNewEventFormSchema,
-  CreateNewEventFormSchemaType,
+  createEventSchema,
+  CreateEventType,
 } from "../../features/Form/newFormSchema";
 import { EventName } from "../../features/Form/components/EventName";
 import { Memo } from "../../features/Form/components/Memo";
@@ -19,7 +20,7 @@ export default function NewPage() {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<CreateNewEventFormSchemaType>({
+  } = useForm<CreateEventType>({
     defaultValues: {
       eventName: "",
       memo: "",
@@ -31,14 +32,16 @@ export default function NewPage() {
       ],
       moneyUnit: "100",
     },
-    resolver: zodResolver(createNewEventFormSchema),
+    resolver: zodResolver(createEventSchema),
     mode: "onBlur",
     reValidateMode: "onBlur",
     criteriaMode: "all",
   });
 
-  const onSubmit: SubmitHandler<CreateNewEventFormSchemaType> = async (
-    data: CreateNewEventFormSchemaType
+  const { push } = useRouter();
+
+  const onSubmit: SubmitHandler<CreateEventType> = async (
+    data: CreateEventType
   ) => {
     // await postEventData(
     //   `${process.env.REACT_APP_DB_EVENT_BASE_URL}/create/`,
@@ -48,6 +51,7 @@ export default function NewPage() {
     //   navigate(`/event/${data.eventId}`, { replace: true });
     // }, 2 * 1000);
     console.log(data);
+    push("/event/1");
   };
 
   return (

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const createNewEventFormSchema = z.object({
+export const createEventSchema = z.object({
   eventName: z
     .string()
     .min(1, "入力必須項目です。")
@@ -36,10 +36,10 @@ export const createNewEventFormSchema = z.object({
   ]),
 });
 
-export type CreateNewEventFormSchemaType = z.infer<
-  typeof createNewEventFormSchema
->;
+export type CreateEventType = z.infer<typeof createEventSchema>;
 
-export const newEventFormSchema = createNewEventFormSchema.extend({
+export const eventSchema = createEventSchema.extend({
   eventId: z.string().min(1, "入力必須項目です。"),
 });
+
+export type EventType = z.infer<typeof eventSchema>;
