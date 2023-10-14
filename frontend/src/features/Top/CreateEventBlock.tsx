@@ -14,7 +14,7 @@ export const CreateEventBlock: React.FC<Props> = ({ showMessage }) => {
         </h5>
       )}
       <Link href="/new">
-        <button className="btn w-full bg-primary text-white text-xl font-medium">
+        <button className="btn w-full bg-primary hover:bg-primary-hover text-white text-xl font-medium">
           さっそく始める
         </button>
       </Link>
