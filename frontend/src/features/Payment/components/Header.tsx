@@ -51,7 +51,7 @@ export const Header: React.FC<Props> = ({ eventInfo }) => {
           onClick={() => {
             router.push(`/event/${eventInfo.eventId}/edit`);
           }}
-          className="btn btn-sm mt-4 md:mt-0"
+          className="btn btn-sm mt-4 md:mt-0 no-animation"
         >
           イベント・メンバー編集
         </button>

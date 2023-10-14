@@ -19,7 +19,7 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
         </div>
       </div>
       <main className="min-h-screen">{children}</main>
-      <footer className="footer p-10 bg-neutral text-neutral-content">
+      <footer className="footer mt-10 p-10 bg-neutral text-neutral-content">
         <nav>
           <a className="link link-hover text-white">利用規約</a>
           <a className="link link-hover text-white">お問い合わせ</a>

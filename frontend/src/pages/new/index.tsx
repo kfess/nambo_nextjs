@@ -71,7 +71,7 @@ export default function NewEventPage() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="btn bg-primary hover:bg-primary-hover text-white w-full mt-1"
+            className="btn bg-primary hover:bg-primary-hover text-white w-full mt-1 no-animation"
           >
             イベント作成
           </button>
