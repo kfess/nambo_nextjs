@@ -1,9 +1,7 @@
 import { AppProps } from "next/app";
-
 import Head from "next/head";
 import "../styles/globals.css";
 import Layout from "../components/layout";
-
 // const Shippori =
 
 const App = ({ Component, pageProps }: AppProps) => (

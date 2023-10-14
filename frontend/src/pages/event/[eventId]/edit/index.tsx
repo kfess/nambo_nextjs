@@ -1,38 +1,38 @@
 import React from "react";
 import { useRouter } from "next/router";
-import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
-import dayjs from "dayjs";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TermsLink } from "../../../../features/Terms/components/TermsLink";
 import { Header } from "../../../../features/Event/components/Header";
 import {
   createEventSchema,
   EventType,
-} from "../../../../features/Event/newFormSchema";
+} from "../../../../features/Event/eventSchema";
 import { EventName } from "../../../../features/Event/components/EventName";
 import { Memo } from "../../../../features/Event/components/Memo";
 import { StartEndDatePicker } from "../../../../features/Event/components/DatePicker";
 import { Member } from "../../../../features/Event/components/Member";
 import { MoneyUnit } from "../../../../features/Event/components/MoneyUnit";
+import { useLocalStorage } from "../../../../hooks/useLocalStorage";
 
-export default function EditEventPage({
-  res,
-}: InferGetServerSidePropsType<typeof getServerSideProps> & {
-  res: EventType;
-}) {
+export default function EditEventPage() {
+  const router = useRouter();
+  const { eventId } = router.query;
+
+  const [eventInfo] = useLocalStorage<EventType>(`eventInfo_${eventId}`);
+
   const {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<EventType>({
     defaultValues: {
-      eventName: res.eventName,
-      memo: res.memo,
-      fromDate: res.fromDate,
-      toDate: res.toDate,
-      members: res.members,
-      moneyUnit: res.moneyUnit,
+      eventName: eventInfo.eventName,
+      memo: eventInfo.memo,
+      fromDate: eventInfo.fromDate,
+      toDate: eventInfo.toDate,
+      members: eventInfo.members,
+      moneyUnit: eventInfo.moneyUnit,
     },
     resolver: zodResolver(createEventSchema),
     mode: "onBlur",
@@ -72,7 +72,7 @@ export default function EditEventPage({
             <button
               className="btn w-1/2 no-animation"
               onClick={() => {
-                push(`/event/${res.eventId}`);
+                push(`/event/${eventInfo.eventId}`);
               }}
             >
               キャンセル
@@ -80,7 +80,7 @@ export default function EditEventPage({
             <button
               className="btn w-1/2 bg-primary hover:bg-primary-hover text-white no-animation"
               onClick={() => {
-                push(`/event/${res.eventId}`);
+                push(`/event/${eventInfo.eventId}`);
               }}
             >
               更新
@@ -91,14 +91,3 @@ export default function EditEventPage({
     </div>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context: any) => {
-  const url = "http://localhost:3000/api/event";
-  const res = await fetch(url).then((r) => r.json());
-
-  try {
-    return {
-      props: { res },
-    };
-  } catch (error) {}
-};

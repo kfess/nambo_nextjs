@@ -1,9 +1,10 @@
 import { useState } from "react";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { EventType } from "../../../features/Event/newFormSchema";
+import { EventType } from "../../../features/Event/eventSchema";
 import { Header } from "../../../features/Payment/components/Header";
 import { Share } from "../../../features/Payment/components/Share";
+import { useLocalStorage } from "../../../hooks/useLocalStorage";
 
 export default function EventPage({
   res,
@@ -11,19 +12,27 @@ export default function EventPage({
   res: EventType;
 }) {
   const router = useRouter();
-  const path = router.pathname;
-  const thisURL = `http://localhost:3000${path}`;
+  const thisURL = `http://localhost:3000${router.pathname}`;
+
+  // data fetched by getServerSideProps is stored in localStorage.
+  // every Event Info throughout the app is get from localStorage.
+  // Even if the data in localstorage is maliciously modified,
+  // it will be overwritten by the data fetched by getServerSideProps. So it is not a problem.
+  const [eventInfo] = useLocalStorage(
+    `eventInfo_${res.eventId}`, // key (UUID), which is considered to be unique for each event.
+    res
+  );
 
   const [selectedTab, setSelectedTab] = useState(0);
 
   return (
     <>
-      <Header eventInfo={res} />
+      <Header eventInfo={eventInfo} />
       <Share url={thisURL} />
       <div className="container mx-auto px-2 ">
         <button
           onClick={() => {
-            router.push("/payment/new");
+            router.push(`/payment/${eventInfo.eventId}/new`);
           }}
           className="btn w-full bg-primary hover:bg-primary-hover text-white my-3"
         >
