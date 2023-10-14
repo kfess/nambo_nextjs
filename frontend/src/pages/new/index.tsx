@@ -1,4 +1,5 @@
 import React from "react";
+import dayjs from "dayjs";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TermsLink } from "../../features/Terms/components/TermsLink";
@@ -9,6 +10,9 @@ import {
 } from "../../features/Form/newFormSchema";
 import { EventName } from "../../features/Form/components/EventName";
 import { Memo } from "../../features/Form/components/Memo";
+import { StartEndDatePicker } from "../../features/Form/components/DatePicker";
+import { Member } from "../../features/Form/components/Member";
+import { MoneyUnit } from "../../features/Form/components/MoneyUnit";
 
 export default function NewPage() {
   const {
@@ -19,8 +23,8 @@ export default function NewPage() {
     defaultValues: {
       eventName: "",
       memo: "",
-      fromDate: "",
-      toDate: "",
+      fromDate: dayjs().format("YYYY/MM/DD"),
+      toDate: dayjs().format("YYYY/MM/DD"),
       members: [
         { name: "", ratio: 1 },
         { name: "", ratio: 1 },
@@ -33,13 +37,29 @@ export default function NewPage() {
     criteriaMode: "all",
   });
 
+  const onSubmit: SubmitHandler<CreateNewEventFormSchemaType> = async (
+    data: CreateNewEventFormSchemaType
+  ) => {
+    // await postEventData(
+    //   `${process.env.REACT_APP_DB_EVENT_BASE_URL}/create/`,
+    //   data
+    // );
+    // setTimeout(() => {
+    //   navigate(`/event/${data.eventId}`, { replace: true });
+    // }, 2 * 1000);
+    console.log(data);
+  };
+
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Header formPageType="new" />
         <div className="container mx-auto px-5">
           <EventName control={control} errors={errors} />
           <Memo control={control} errors={errors} />
+          <StartEndDatePicker control={control} errors={errors} />
+          <Member control={control} errors={errors} />
+          <MoneyUnit control={control} errors={errors} />
           <div className="text-center text-sm">
             <TermsLink inFooter={false} />
             に同意のうえ
