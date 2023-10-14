@@ -9,15 +9,20 @@ const messages = [
 
 export const HowToUse = () => {
   return (
-    <>
-      <h5 style={{ textAlign: "center", marginTop: "1rem" }}>使い方は簡単</h5>
-      <div style={{ marginBottom: "40px" }}>
-        <h3>
-          <Chip label="Step 1" />
-        </h3>
-        <div style={{ marginLeft: "20px", marginBottom: "15px" }}>
-          {messages[0]}
+    <div>
+      <h5 className="text-center pb-5 text-xl">使い方は簡単</h5>
+      <div>
+        <span className="badge bg-green-600 text-white px-3 py-5 ">Step1</span>
+        <div className="pl-5 py-1">イベントを作成します</div>
+        <div className="">
+          <Image
+            src="/how_to_use_1.png"
+            alt="create event"
+            width={300}
+            height={150}
+          />
         </div>
+
         {/* <img
           src={howToUse1}
           alt="picture"
@@ -72,6 +77,6 @@ export const HowToUse = () => {
           }}
         />
       </div> */}
-    </>
+    </div>
   );
 };

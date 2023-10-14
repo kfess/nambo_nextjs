@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+
 type FAQType = { Q: string; A: string };
 
 const FAQList: FAQType[] = [
@@ -32,5 +34,57 @@ const FAQList: FAQType[] = [
 ];
 
 export const FAQ = () => {
-  return <div>{/* <button className="btn"></button> */}</div>;
+  const [active, setActive] = useState(0);
+
+  return (
+    <div className="join join-vertical w-full">
+      <div>よくある質問</div>
+      {FAQList.map((faq, index) => {
+        return (
+          <div
+            key={index}
+            className="collapse collapse-arrow join-item border border-base-300"
+          >
+            <input
+              type="radio"
+              name="my-accordion-4"
+              checked={active === index}
+              onChange={() => setActive(index)}
+            />
+            <div className="collapse-title font-bold">{faq.Q}</div>
+            <div className="collapse-content">
+              <p>{faq.A}</p>
+            </div>
+          </div>
+        );
+      })}
+      {/* <div className="collapse collapse-arrow join-item border border-base-300">
+        <input type="radio" name="my-accordion-4" checked="checked" />
+        <div className="collapse-title text-xl font-medium">
+          Click to open this one and close others
+        </div>
+        <div className="collapse-content">
+          <p>hello</p>
+        </div>
+      </div>
+      <div className="collapse collapse-arrow join-item border border-base-300">
+        <input type="radio" name="my-accordion-4" />
+        <div className="collapse-title text-xl font-medium">
+          Click to open this one and close others
+        </div>
+        <div className="collapse-content">
+          <p>hello</p>
+        </div>
+      </div>
+      <div className="collapse collapse-arrow join-item border border-base-300">
+        <input type="radio" name="my-accordion-4" />
+        <div className="collapse-title text-xl font-medium">
+          Click to open this one and close others
+        </div>
+        <div className="collapse-content">
+          <p>hello</p>
+        </div>
+      </div> */}
+    </div>
+  );
 };
