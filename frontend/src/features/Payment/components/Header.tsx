@@ -4,7 +4,7 @@ import { BiSolidUser } from "react-icons/bi";
 import { BsListStars, BsBookmarkStarFill } from "react-icons/bs";
 import { BiSolidCalendarStar } from "react-icons/bi";
 import { TbMoneybag } from "react-icons/tb";
-import { EventType } from "../../Event/newFormSchema";
+import { EventType } from "../../Event/eventSchema";
 
 type Props = {
   eventInfo: EventType;
@@ -12,6 +12,7 @@ type Props = {
 
 export const Header: React.FC<Props> = ({ eventInfo }) => {
   const router = useRouter();
+  const path = router.pathname;
 
   return (
     <div className="bg-nambo-green text-white p-5">

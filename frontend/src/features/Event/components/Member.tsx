@@ -5,12 +5,12 @@ import {
   Control,
   FieldErrors,
 } from "react-hook-form";
-import { CreateNewEventFormSchemaType } from "../newFormSchema";
+import { CreateEventType } from "../eventSchema";
 import { ErrorMessage } from "../../../components/shared/ErrorMessage";
 
 type Props = {
-  control: Control<CreateNewEventFormSchemaType>;
-  errors: FieldErrors<CreateNewEventFormSchemaType>;
+  control: Control<CreateEventType>;
+  errors: FieldErrors<CreateEventType>;
 };
 
 export const Member: React.FC<Props> = ({ control, errors }) => {

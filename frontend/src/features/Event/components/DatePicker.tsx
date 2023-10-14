@@ -2,12 +2,12 @@ import React from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { CreateNewEventFormSchemaType } from "../newFormSchema";
+import { CreateEventType } from "../eventSchema";
 import { ErrorMessage } from "../../../components/shared/ErrorMessage";
 
 type Props = {
-  control: Control<CreateNewEventFormSchemaType>;
-  errors: FieldErrors<CreateNewEventFormSchemaType>;
+  control: Control<CreateEventType>;
+  errors: FieldErrors<CreateEventType>;
 };
 
 export const StartEndDatePicker: React.FC<Props> = ({ control, errors }) => {
