@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { MdOutlineCopyright } from "react-icons/md";
 
 const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   return (
@@ -17,7 +18,17 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
           </a>
         </div>
       </div>
-      <main>{children}</main>
+      <main className="min-h-screen">{children}</main>
+      <footer className="footer p-10 bg-neutral text-neutral-content">
+        <nav>
+          <a className="link link-hover text-white">利用規約</a>
+          <a className="link link-hover text-white">お問い合わせ</a>
+          <div className="text-white flex flex-row items-center">
+            <MdOutlineCopyright />
+            <span>&nbsp;nambo.</span>
+          </div>
+        </nav>
+      </footer>
     </>
   );
 };

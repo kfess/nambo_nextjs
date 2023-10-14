@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { EventType } from "../../features/Form/newFormSchema";
+import { EventType } from "../../features/Event/newFormSchema";
 
 export default function handler(
   req: NextApiRequest,

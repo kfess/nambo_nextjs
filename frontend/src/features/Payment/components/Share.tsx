@@ -15,7 +15,7 @@ export const Share: React.FC<Props> = ({ url }) => {
   };
 
   return (
-    <div className="py-2">
+    <div className="p-2">
       <div className="text-right">
         <button className="btn btn-sm" onClick={onClick}>
           <span>URL を共有</span>

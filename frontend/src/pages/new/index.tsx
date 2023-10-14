@@ -4,18 +4,18 @@ import dayjs from "dayjs";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TermsLink } from "../../features/Terms/components/TermsLink";
-import { Header } from "../../features/Form/components/Header";
+import { Header } from "../../features/Event/components/Header";
 import {
   createEventSchema,
   CreateEventType,
-} from "../../features/Form/newFormSchema";
-import { EventName } from "../../features/Form/components/EventName";
-import { Memo } from "../../features/Form/components/Memo";
-import { StartEndDatePicker } from "../../features/Form/components/DatePicker";
-import { Member } from "../../features/Form/components/Member";
-import { MoneyUnit } from "../../features/Form/components/MoneyUnit";
+} from "../../features/Event/newFormSchema";
+import { EventName } from "../../features/Event/components/EventName";
+import { Memo } from "../../features/Event/components/Memo";
+import { StartEndDatePicker } from "../../features/Event/components/DatePicker";
+import { Member } from "../../features/Event/components/Member";
+import { MoneyUnit } from "../../features/Event/components/MoneyUnit";
 
-export default function NewPage() {
+export default function NewEventPage() {
   const {
     control,
     handleSubmit,

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { EventType } from "../../../features/Form/newFormSchema";
+import { EventType } from "../../../features/Event/newFormSchema";
 import { Header } from "../../../features/Payment/components/Header";
 import { Share } from "../../../features/Payment/components/Share";
 
@@ -19,13 +19,13 @@ export default function EventPage({
   return (
     <>
       <Header eventInfo={res} />
-      <div className="container mx-auto px-2">
-        <Share url={thisURL} />
+      <Share url={thisURL} />
+      <div className="container mx-auto px-2 ">
         <button
           onClick={() => {
             router.push("/payment/new");
           }}
-          className="btn w-full bg-primary hover:bg-primary-hover text-white"
+          className="btn w-full bg-primary hover:bg-primary-hover text-white my-3"
         >
           支払い情報入力へ
         </button>
