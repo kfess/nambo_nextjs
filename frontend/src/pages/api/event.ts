@@ -17,6 +17,8 @@ export default function handler(
       members: [
         { name: "モナちゃん", ratio: 1 },
         { name: "モナコくん", ratio: 1 },
+        { name: "モナ王", ratio: 1 },
+        { name: "モナモナ", ratio: 1 },
       ],
       moneyUnit: "1",
     });

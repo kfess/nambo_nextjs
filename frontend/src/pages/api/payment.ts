@@ -24,6 +24,14 @@ export default function handler(
         otherNames: ["もなこくん", "もなこちゃん"],
         cost: 2000,
       },
+      {
+        eventId: "1",
+        paymentId: "2",
+        name: "もなちゃん",
+        purpose: "世界一周旅行",
+        otherNames: ["もなこくん", "もなこちゃん"],
+        cost: 20000000,
+      },
     ]);
   } else if (req.method === "POST") {
     // body から eventId, paymentId を取得して、DB に支払い情報を追加する

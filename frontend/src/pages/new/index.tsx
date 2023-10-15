@@ -8,7 +8,7 @@ import { Header } from "../../features/Event/components/Header";
 import {
   createEventSchema,
   CreateEventType,
-} from "../../features/Event/newFormSchema";
+} from "../../features/Event/eventSchema";
 import { EventName } from "../../features/Event/components/EventName";
 import { Memo } from "../../features/Event/components/Memo";
 import { StartEndDatePicker } from "../../features/Event/components/DatePicker";

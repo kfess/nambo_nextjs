@@ -6,13 +6,14 @@ import { Header } from "../../../features/Payment/components/Header";
 import { Share } from "../../../features/Payment/components/Share";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
 import { PaymentType } from "../../../features/Payment/paymentFormSchema";
+import { PaymentByEvent } from "../../../features/Payment/components/PaymentByEvent";
 
 export default function EventPage({
   event,
-  payment,
+  payments,
 }: InferGetServerSidePropsType<typeof getServerSideProps> & {
   event: EventType;
-  payment: PaymentType[];
+  payments: PaymentType[];
 }) {
   const router = useRouter();
   const thisURL = `http://localhost:3000${router.pathname}`;
@@ -26,7 +27,7 @@ export default function EventPage({
     event
   );
 
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab, setSelectedTab] = useState(1);
 
   return (
     <>
@@ -56,7 +57,7 @@ export default function EventPage({
               setSelectedTab(1);
             }}
           >
-            これまでの支払い情報
+            支払い情報
           </div>
           <div
             className={`tab flex-1 ${selectedTab === 2 ? "tab-active" : ""}`}
@@ -67,6 +68,18 @@ export default function EventPage({
             みんなの支出
           </div>
         </div>
+        {selectedTab === 0 && <>a</>}
+        {selectedTab === 1 && (
+          <>
+            {payments.map((payment) => (
+              <>
+                <PaymentByEvent key={payment.paymentId} payment={payment} />
+                <div className="divider" />
+              </>
+            ))}
+          </>
+        )}
+        {selectedTab === 2 && <>c</>}
       </div>
     </>
   );
@@ -77,13 +90,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const eventData = await fetch(eventUrl).then((r) => r.json());
 
   const paymentUrl = "http://localhost:3000/api/payment";
-  const paymentData = await fetch(paymentUrl).then((r) => r.json());
+  const paymentsData = await fetch(paymentUrl).then((r) => r.json());
 
   try {
     return {
       props: {
         event: eventData,
-        payment: paymentData,
+        payments: paymentsData,
       },
     };
   } catch (error) {}
