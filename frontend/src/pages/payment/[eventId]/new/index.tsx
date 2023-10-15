@@ -11,6 +11,7 @@ import {
 import { Purpose } from "../../../../features/Payment/components/Form/Purpose";
 import { PayerName } from "../../../../features/Payment/components/Form/PayerName";
 import { Receiver } from "../../../../features/Payment/components/Form/Receiver";
+import { Money } from "../../../../features/Payment/components/Form/Money";
 
 export default function PaymentNewPage() {
   const router = useRouter();
@@ -63,7 +64,8 @@ export default function PaymentNewPage() {
           setValue={setValue}
           members={eventInfo.members ?? []}
         />
-        <div className="flex flex-row w-full space-x-2">
+        <Money register={register} errors={errors} />
+        <div className="flex flex-row w-full space-x-2 my-10">
           <button
             onClick={() => {
               router.push(`/event/${eventId}`);
