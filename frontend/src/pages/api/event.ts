@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { EventType } from "../../features/Event/newFormSchema";
+import { EventType } from "../../features/Event/eventSchema";
 
 export default function handler(
   req: NextApiRequest,
@@ -21,6 +21,5 @@ export default function handler(
       moneyUnit: "1",
     });
   } else if (req.method === "POST") {
-    // res.status(200).json({ message: "Post! Hello from Next.js!" });
   }
 }

@@ -5,11 +5,14 @@ import { EventType } from "../../../features/Event/eventSchema";
 import { Header } from "../../../features/Payment/components/Header";
 import { Share } from "../../../features/Payment/components/Share";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
+import { PaymentType } from "../../../features/Payment/paymentFormSchema";
 
 export default function EventPage({
-  res,
+  event,
+  payment,
 }: InferGetServerSidePropsType<typeof getServerSideProps> & {
-  res: EventType;
+  event: EventType;
+  payment: PaymentType[];
 }) {
   const router = useRouter();
   const thisURL = `http://localhost:3000${router.pathname}`;
@@ -19,8 +22,8 @@ export default function EventPage({
   // Even if the data in localstorage is maliciously modified,
   // it will be overwritten by the data fetched by getServerSideProps. So it is not a problem.
   const [eventInfo] = useLocalStorage(
-    `eventInfo_${res.eventId}`, // key (UUID), which is considered to be unique for each event.
-    res
+    `eventInfo_${event.eventId}`, // key (UUID), which is considered to be unique for each event.
+    event
   );
 
   const [selectedTab, setSelectedTab] = useState(0);
@@ -70,12 +73,18 @@ export default function EventPage({
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const url = "http://localhost:3000/api/event";
-  const res = await fetch(url).then((r) => r.json());
+  const eventUrl = "http://localhost:3000/api/event";
+  const eventData = await fetch(eventUrl).then((r) => r.json());
+
+  const paymentUrl = "http://localhost:3000/api/payment";
+  const paymentData = await fetch(paymentUrl).then((r) => r.json());
 
   try {
     return {
-      props: { res },
+      props: {
+        event: eventData,
+        payment: paymentData,
+      },
     };
   } catch (error) {}
 };
