@@ -1,13 +1,14 @@
 import { useState } from "react";
-import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
+import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { EventType } from "../../../features/Event/eventSchema";
 import { Header } from "../../../features/Payment/components/Header";
-import { Share } from "../../../features/Payment/components/Share";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
 import { PaymentType } from "../../../features/Payment/paymentFormSchema";
 import { PaymentByEvent } from "../../../features/Payment/components/PaymentByEvent";
 import { WhoToWhom } from "../../../features/Payment/components/WhoToWhom";
+import { TotalExpense } from "../../../features/Payment/components/TotalExpense";
+import { Share } from "../../../features/Payment/components/Share";
 
 export default function EventPage({
   event,
@@ -17,8 +18,7 @@ export default function EventPage({
   payments: PaymentType[];
 }) {
   const router = useRouter();
-  const thisURL = `http://localhost:3000${router.pathname}`;
-
+  const thisURL = `http://localhost:3000${router.asPath}`;
   // data fetched by getServerSideProps is stored in localStorage.
   // every Event Info throughout the app is get from localStorage.
   // Even if the data in localstorage is maliciously modified,
@@ -90,7 +90,11 @@ export default function EventPage({
             ))}
           </>
         )}
-        {selectedTab === 2 && <>c</>}
+        {selectedTab === 2 && (
+          <>
+            <TotalExpense payments={payments} members={eventInfo.members} />
+          </>
+        )}
       </div>
     </>
   );

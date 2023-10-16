@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { BiSolidUser } from "react-icons/bi";
-import { BsListStars, BsBookmarkStarFill } from "react-icons/bs";
+import { BsListStars } from "react-icons/bs";
 import { BiSolidCalendarStar } from "react-icons/bi";
 import { TbMoneybag } from "react-icons/tb";
 import { EventType } from "../../Event/eventSchema";

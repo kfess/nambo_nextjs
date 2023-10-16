@@ -2,12 +2,11 @@ import { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { ImQrcode } from "react-icons/im";
 
-interface Props {
+type Props = {
   url: string;
-}
+};
 
-export const QRCodeButton = (props: Props) => {
-  const { url } = props;
+export const QRCodeButton: React.FC<Props> = ({ url }) => {
   const [qrCode, showQrcode] = useState(false);
 
   return (
@@ -15,7 +14,9 @@ export const QRCodeButton = (props: Props) => {
       <button onClick={() => showQrcode(!qrCode)} className="btn w-full">
         QRコードを表示 <ImQrcode />
       </button>
-      <div>{qrCode && <QRCodeSVG value={url} />}</div>
+      <div className="flex justify-center py-3 ">
+        {qrCode && <QRCodeSVG value={url} />}
+      </div>
     </div>
   );
 };

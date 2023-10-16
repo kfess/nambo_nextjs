@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { MdOutlineFileCopy } from "react-icons/md";
 
 const copyTextToClipBoard = (text: string) => {
@@ -13,17 +13,26 @@ type Props = {
 };
 
 export const URLCopyButton: React.FC<Props> = ({ url }) => {
+  const [isCopySuccess, setIsCopySuccess] = useState(false);
+
   return (
     <div className="w-full">
-      <button onClick={() => copyTextToClipBoard(url)} className="btn w-full">
-        <span>URLをコピー</span>
-        <MdOutlineFileCopy />
+      <button
+        onClick={() => {
+          copyTextToClipBoard(url);
+          setIsCopySuccess(true);
+        }}
+        className="btn w-full"
+      >
+        {isCopySuccess ? (
+          <span>URLをコピーしました</span>
+        ) : (
+          <div className="flex flex-row space-x-2">
+            <span>URL をコピー</span>
+            <MdOutlineFileCopy />
+          </div>
+        )}
       </button>
-      {/* <Tooltip
-        target="url-copy-button"
-        children={<div>URLをコピーしました。</div>}
-        trigger="focus"
-      /> */}
     </div>
   );
 };

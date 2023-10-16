@@ -11,7 +11,7 @@ export default function handler(
       {
         eventId: "1",
         paymentId: "1",
-        name: "もなちゃん",
+        name: "もなこちゃん",
         purpose: "世界一周旅行",
         otherNames: ["もなこくん", "もなこちゃん"],
         cost: 400,
@@ -19,7 +19,7 @@ export default function handler(
       {
         eventId: "1",
         paymentId: "2",
-        name: "もなちゃん",
+        name: "もなこちゃん",
         purpose: "世界一周旅行",
         otherNames: ["もなこくん", "もなこちゃん"],
         cost: 50,
@@ -27,7 +27,7 @@ export default function handler(
       {
         eventId: "1",
         paymentId: "3",
-        name: "もなちゃん",
+        name: "もなこちゃん",
         purpose: "世界一周旅行",
         otherNames: ["もなこくん", "もなこちゃん"],
         cost: 200,
@@ -42,7 +42,7 @@ export default function handler(
       },
       {
         eventId: "1",
-        paymentId: "4",
+        paymentId: "5",
         name: "もなこくん",
         purpose: "トイレ代",
         otherNames: ["もなこちゃん"],
@@ -50,7 +50,7 @@ export default function handler(
       },
       {
         eventId: "1",
-        paymentId: "4",
+        paymentId: "6",
         name: "ゴリお",
         purpose: "トイレ代",
         otherNames: ["ぶっち"],

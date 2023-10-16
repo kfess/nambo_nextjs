@@ -51,7 +51,9 @@ export default function PaymentNewPage() {
     <div>
       <Header eventInfo={eventInfo} />
       <div className="container mx-auto px-5">
-        <div className="text-center my-5 text-xl">支払い情報の追加</div>
+        <div className="text-center my-5 text-xl underline underline-offset-8 decoration-nambo-green decoration-4">
+          支払い情報の追加
+        </div>
         <Purpose control={control} errors={errors} />
         <PayerName
           control={control}
