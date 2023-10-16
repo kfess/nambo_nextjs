@@ -26,7 +26,7 @@ export default function handler(
       },
       {
         eventId: "1",
-        paymentId: "2",
+        paymentId: "3",
         name: "もなちゃん",
         purpose: "世界一周旅行",
         otherNames: ["もなこくん", "もなこちゃん"],

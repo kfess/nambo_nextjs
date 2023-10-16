@@ -16,7 +16,7 @@ export const Purpose: React.FC<Props> = ({ control, errors }) => {
       render={({ field }) => (
         <div className="flex flex-col mt-3">
           <label htmlFor="purpose" className="text-md mb-1 font-medium">
-            何の代金*
+            何の代金？*
           </label>
           <input
             {...field}

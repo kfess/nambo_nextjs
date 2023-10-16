@@ -15,7 +15,7 @@ export default function handler(
       fromDate: "2021-10-01",
       toDate: "2021-10-31",
       members: [
-        { name: "モナちゃん", ratio: 1 },
+        { name: "もなちゃん", ratio: 1 },
         { name: "モナコくん", ratio: 1 },
         { name: "モナ王", ratio: 1 },
         { name: "モナモナ", ratio: 1 },

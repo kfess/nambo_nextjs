@@ -7,6 +7,7 @@ import { Share } from "../../../features/Payment/components/Share";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
 import { PaymentType } from "../../../features/Payment/paymentFormSchema";
 import { PaymentByEvent } from "../../../features/Payment/components/PaymentByEvent";
+import { WhoToWhom } from "../../../features/Payment/components/WhoToWhom";
 
 export default function EventPage({
   event,
@@ -68,7 +69,17 @@ export default function EventPage({
             みんなの支出
           </div>
         </div>
-        {selectedTab === 0 && <>a</>}
+        {selectedTab === 0 && (
+          <>
+            {payments && eventInfo && (
+              <WhoToWhom
+                payments={payments}
+                members={eventInfo.members}
+                moneyUnit={eventInfo.moneyUnit}
+              />
+            )}
+          </>
+        )}
         {selectedTab === 1 && (
           <>
             {payments.map((payment) => (

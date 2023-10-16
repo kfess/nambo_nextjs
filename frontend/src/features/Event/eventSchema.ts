@@ -44,6 +44,9 @@ export const eventSchema = createEventSchema.extend({
 
 export type EventType = z.infer<typeof eventSchema>;
 
+export type Member = Pick<EventType, "members">["members"][number];
+export type MoneyUnit = Pick<EventType, "moneyUnit">["moneyUnit"];
+
 // export const editEventSchema = z.object({
 //   eventId: z.string().nonempty("入力必須項目です。"),
 //   eventName: z
