@@ -16,11 +16,12 @@ export default function handler(
       toDate: "2021-10-31",
       members: [
         { name: "もなちゃん", ratio: 1 },
-        { name: "モナコくん", ratio: 1 },
-        { name: "モナ王", ratio: 1 },
+        { name: "もなこくん", ratio: 1 },
         { name: "モナモナ", ratio: 1 },
+        { name: "ゴリお", ratio: 1 },
+        { name: "ぶっち", ratio: 1 },
       ],
-      moneyUnit: "1",
+      moneyUnit: "10",
     });
   } else if (req.method === "POST") {
   }

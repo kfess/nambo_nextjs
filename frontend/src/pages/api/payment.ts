@@ -14,7 +14,7 @@ export default function handler(
         name: "もなちゃん",
         purpose: "世界一周旅行",
         otherNames: ["もなこくん", "もなこちゃん"],
-        cost: 1000,
+        cost: 400,
       },
       {
         eventId: "1",
@@ -22,7 +22,7 @@ export default function handler(
         name: "もなちゃん",
         purpose: "世界一周旅行",
         otherNames: ["もなこくん", "もなこちゃん"],
-        cost: 2000,
+        cost: 50,
       },
       {
         eventId: "1",
@@ -30,7 +30,31 @@ export default function handler(
         name: "もなちゃん",
         purpose: "世界一周旅行",
         otherNames: ["もなこくん", "もなこちゃん"],
-        cost: 20000000,
+        cost: 200,
+      },
+      {
+        eventId: "1",
+        paymentId: "4",
+        name: "もなこくん",
+        purpose: "トイレ代",
+        otherNames: ["もなこくん", "もなこちゃん"],
+        cost: 800,
+      },
+      {
+        eventId: "1",
+        paymentId: "4",
+        name: "もなこくん",
+        purpose: "トイレ代",
+        otherNames: ["もなこちゃん"],
+        cost: 200,
+      },
+      {
+        eventId: "1",
+        paymentId: "4",
+        name: "ゴリお",
+        purpose: "トイレ代",
+        otherNames: ["ぶっち"],
+        cost: 2000,
       },
     ]);
   } else if (req.method === "POST") {

@@ -1,4 +1,5 @@
 import React from "react";
+import { BiSolidUser } from "react-icons/bi";
 import { PaymentType } from "../paymentFormSchema";
 
 type Props = {
@@ -24,13 +25,11 @@ export const PaymentByEvent: React.FC<Props> = ({ payment }) => {
             {payment.cost.toLocaleString()} 円
           </div>
         </div>
-        <div>
+        <div className="flex flex-row flex-wrap">
           {payment.otherNames.map((otherName, index) => (
-            <span
-              key={index}
-              className="badge badge-lg bg-nambo-green text-white mr-2"
-            >
-              {otherName}
+            <span key={index} className="flex flex-row items-center mr-2">
+              <BiSolidUser fontSize={20} />
+              <div>{otherName}</div>
             </span>
           ))}
         </div>
@@ -38,3 +37,19 @@ export const PaymentByEvent: React.FC<Props> = ({ payment }) => {
     </div>
   );
 };
+
+{
+  /* <div className="flex flex-wrap mb-1 pl-1">
+                  {eventInfo.members.map((member, idx) => (
+                    <div key={idx} className="flex flex-row items-center mr-1">
+                      <BiSolidUser
+                        fontSize={20}
+                        className={`text-${
+                          userColors[idx % eventInfo.members.length]
+                        }-300`}
+                      />
+                      <span className="text-sm pl-1">{member.name}</span>
+                    </div>
+                  ))}
+                </div> */
+}

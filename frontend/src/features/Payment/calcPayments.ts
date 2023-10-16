@@ -61,7 +61,7 @@ export const calcPaymentByTotalAction = (
   return totalCost;
 };
 
-interface PayBackMoney {
+export interface PayBackMoney {
   fromName: string;
   toName: string;
   cost: number;
