@@ -1,32 +1,26 @@
 import React from "react";
-import { Control, Controller, FieldErrors } from "react-hook-form";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { ErrorMessage } from "../../../components/shared/ErrorMessage";
-import { CreateNewEventFormSchemaType } from "../newFormSchema";
+import { CreateEventType } from "../eventSchema";
 
 type Props = {
-  control: Control<CreateNewEventFormSchemaType>;
-  errors: FieldErrors<CreateNewEventFormSchemaType>;
+  register: UseFormRegister<CreateEventType>;
+  errors: FieldErrors<CreateEventType>;
 };
 
-export const Memo: React.FC<Props> = ({ control, errors }) => {
+export const Memo: React.FC<Props> = ({ register, errors }) => {
   return (
-    <Controller
-      name="memo"
-      control={control}
-      render={({ field }) => (
-        <div className="flex flex-col mt-3">
-          <label htmlFor="event-name" className="text-md mb-1 font-medium">
-            メモ
-          </label>
-          <textarea
-            {...field}
-            placeholder="○月○日までに入力してね！ など"
-            aria-label="memo (○月○日までに入力してね！など)"
-            className="textarea textarea-bordered h-20 w-full p-2 border rounded text-base mb-1"
-          />
-          {errors.memo && <ErrorMessage message={errors.memo.message} />}
-        </div>
-      )}
-    />
+    <div className="my-4">
+      <fieldset className="flex flex-col">
+        <legend className="text-md font-bold mb-1 ">メモ</legend>
+        <textarea
+          {...register("memo")}
+          placeholder="○月○日までに入力してね！ など"
+          aria-label="memo (○月○日までに入力してね！など)"
+          className="textarea textarea-bordered text-base h-20 w-full p-2 border rounded max-h-52"
+        />
+        {errors.memo && <ErrorMessage message={errors.memo.message} />}
+      </fieldset>
+    </div>
   );
 };

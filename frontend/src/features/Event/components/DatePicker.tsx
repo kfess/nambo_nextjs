@@ -14,13 +14,13 @@ type Props = {
 export const StartEndDatePicker: React.FC<Props> = ({ control, errors }) => {
   return (
     <>
-      <div className="mb-4 flex flex-row w-full space-x-1">
+      <div className="mb-4 flex flex-row w-full space-x-2">
         <Controller
           name="fromDate"
           control={control}
           render={({ field }) => (
             <div className="flex flex-col mt-3 w-1/2">
-              <label htmlFor="from-date" className="text-md mb-1 font-medium">
+              <label htmlFor="from-date" className="text-md mb-1 font-bold">
                 いつから？
               </label>
               <DatePicker
@@ -44,7 +44,7 @@ export const StartEndDatePicker: React.FC<Props> = ({ control, errors }) => {
           control={control}
           render={({ field }) => (
             <div className="flex flex-col mt-3 w-1/2">
-              <label htmlFor="from-date" className="text-md mb-1 font-medium">
+              <label htmlFor="from-date" className="text-md mb-1 font-bold">
                 いつまで？
               </label>
               <DatePicker

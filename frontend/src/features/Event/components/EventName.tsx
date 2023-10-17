@@ -10,11 +10,9 @@ type Props = {
 
 export const EventName: React.FC<Props> = ({ register, errors }) => {
   return (
-    <div className="mb-4">
-      <div className="flex flex-col mt-3">
-        <label htmlFor="event-name" className="text-md mb-1 font-medium">
-          イベント名*
-        </label>
+    <div className="my-4">
+      <fieldset className="flex flex-col">
+        <legend className="text-md font-bold mb-1">イベント名 *</legend>
         <input
           {...register("eventName")}
           id="event-name"
@@ -26,7 +24,7 @@ export const EventName: React.FC<Props> = ({ register, errors }) => {
         {errors.eventName && (
           <ErrorMessage message={errors.eventName.message} />
         )}
-      </div>
+      </fieldset>
     </div>
   );
 };

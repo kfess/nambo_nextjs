@@ -54,7 +54,7 @@ export default function handler(
         name: "ゴリお",
         purpose: "トイレ代",
         otherNames: ["ぶっち"],
-        cost: 2000,
+        cost: 200000,
       },
     ]);
   } else if (req.method === "POST") {

@@ -59,10 +59,10 @@ export default function NewEventPage() {
         <Header formPageType="new" />
         <div className="container mx-auto px-5">
           <EventName register={register} errors={errors} />
-          <Memo control={control} errors={errors} />
+          <Memo register={register} errors={errors} />
           <StartEndDatePicker control={control} errors={errors} />
           <Member register={register} control={control} errors={errors} />
-          <MoneyUnit control={control} errors={errors} />
+          <MoneyUnit register={register} errors={errors} />
           <div className="text-center text-sm">
             <TermsLink inFooter={false} />
             に同意のうえ
