@@ -34,10 +34,18 @@ export const Receiver: React.FC<Props> = ({
         <label htmlFor="members" className="flex justify-between items-center">
           誰の分？*
         </label>
-        <button onClick={onSelectAll} className="btn btn-sm  rounded">
+        <button
+          type="button"
+          onClick={onSelectAll}
+          className="btn btn-sm rounded no-animation"
+        >
           全員選択
         </button>
-        <button onClick={onUnselectAll} className="btn btn-sm  rounded">
+        <button
+          type="button"
+          onClick={onUnselectAll}
+          className="btn btn-sm rounded no-animation"
+        >
           全員未選択
         </button>
       </div>

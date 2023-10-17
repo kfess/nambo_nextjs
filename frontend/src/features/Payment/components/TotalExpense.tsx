@@ -36,9 +36,7 @@ export const TotalExpense: React.FC<Props> = ({ payments, members }) => {
             type="checkbox"
             className="toggle toggle-primary"
             checked={includeRatio}
-            onClick={() => {
-              setIncludeRatio(!includeRatio);
-            }}
+            onChange={() => setIncludeRatio(!includeRatio)}
           />
         </label>
       </div>
@@ -53,7 +51,7 @@ export const TotalExpense: React.FC<Props> = ({ payments, members }) => {
         <tbody>
           {members.map((member) => {
             return (
-              <tr>
+              <tr key={member.name}>
                 <td>{member.name}</td>
                 <td>
                   {Number(

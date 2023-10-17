@@ -2,6 +2,7 @@ import React from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import dayjs from "dayjs";
 import { CreateEventType } from "../eventSchema";
 import { ErrorMessage } from "../../../components/shared/ErrorMessage";
 
@@ -26,7 +27,9 @@ export const StartEndDatePicker: React.FC<Props> = ({ control, errors }) => {
                 {...field}
                 id="from-date"
                 selected={new Date(field.value)}
-                onChange={(date) => field.onChange(date)}
+                onChange={(date: Date) =>
+                  field.onChange(dayjs(date).format("YYYY/MM/DD"))
+                }
                 dateFormat="yyyy/MM/dd"
                 className="input input-bordered input-sm h-[2.5rem] w-full p-2 border rounded text-base mb-1"
               />
@@ -48,7 +51,9 @@ export const StartEndDatePicker: React.FC<Props> = ({ control, errors }) => {
                 {...field}
                 id="from-date"
                 selected={new Date(field.value)}
-                onChange={(date) => field.onChange(date)}
+                onChange={(date: Date) =>
+                  field.onChange(dayjs(date).format("YYYY/MM/DD"))
+                }
                 dateFormat="yyyy/MM/dd"
                 className="input input-bordered input-sm h-[2.5rem] w-full p-2 border rounded text-base mb-1"
               />

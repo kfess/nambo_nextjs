@@ -23,13 +23,12 @@ export const MoneyUnit: React.FC<Props> = ({ control, errors }) => {
               {...field}
               id="money-unit"
               aria-label="精算単位"
+              defaultValue={10}
               className="select select-bordered select-md text-base w-full"
             >
               <option value="1">1 円単位</option>
               <option value="10">10 円単位</option>
-              <option value="100" selected>
-                100 円単位
-              </option>
+              <option value="100">100 円単位</option>
               <option value="1000">1000 円単位</option>
             </select>
             {errors.moneyUnit && (
