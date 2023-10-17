@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,9 +26,9 @@ export default function EditPaymentPage() {
   );
 
   // 該当する支払い情報を取得
-  const payment = paymentInfo?.find(
-    (payment) => payment.paymentId === paymentId
-  );
+  const payment =
+    paymentInfo?.find((payment) => payment.paymentId === paymentId) ??
+    ({} as PaymentType);
 
   const {
     control,
@@ -49,7 +50,16 @@ export default function EditPaymentPage() {
     criteriaMode: "all",
   });
 
-  if (!router.isReady || !eventInfo) {
+  useEffect(() => {
+    if (payment) {
+      setValue("purpose", payment.purpose);
+      setValue("name", payment.name);
+      setValue("otherNames", payment.otherNames);
+      setValue("cost", payment.cost);
+    }
+  }, [eventInfo, paymentInfo, setValue]);
+
+  if (!router.isReady || !eventInfo || !paymentInfo) {
     return null;
   }
 

@@ -2,7 +2,6 @@ import React from "react";
 import { FaMoneyBill } from "react-icons/fa";
 import { FaMoneyBills } from "react-icons/fa6";
 import { RiMoneyCnyCircleLine } from "react-icons/ri";
-import { RxDoubleArrowRight } from "react-icons/rx";
 import { Member, MoneyUnit } from "../../Event/eventSchema";
 import { PaymentType } from "../paymentFormSchema";
 import {
@@ -10,6 +9,7 @@ import {
   calcPaymentByTotalAction,
   PayBackMoney,
 } from "../calcPayments";
+import { getColorClass } from "../../../helpers/color";
 
 type Props = {
   payments: PaymentType[];
@@ -38,14 +38,17 @@ export const WhoToWhom: React.FC<Props> = ({
     <div>
       {Object.entries(groupedData).map(([fromName, paybacks], idx) => {
         const sum = paybacks.reduce((acc, curr) => acc + curr.cost, 0);
+        const textColor = getColorClass(fromName);
+        const borderColor = getColorClass(fromName, "border-l");
+
         return (
           <div
             key={idx}
-            className="my-3 px-4 py-3 shadow-md rounded-lg border border-l-8 border-l-pink-800"
+            className={`my-3 px-4 py-3 shadow-md rounded-lg border border-l-8 ${borderColor}`}
           >
             <div className="text-xs text-gray-400">DAREGA</div>
             <div className="flex flex-row justify-between">
-              <div className="text-xl font-bold text-pink-800 mb-3">
+              <div className={`text-xl font-bold ${textColor} mb-3`}>
                 {fromName}
               </div>
               <div>
@@ -72,7 +75,7 @@ export const WhoToWhom: React.FC<Props> = ({
                 className="flex justify-between mb-3 border-b font-bold"
               >
                 <span>{payback.toName}</span>
-                <span className="font-bold text-xl text-pink-800">
+                <span className={`font-bold text-xl`}>
                   {(
                     Math.floor(payback.cost / parseInt(moneyUnit, 10)) *
                     parseInt(moneyUnit, 10)

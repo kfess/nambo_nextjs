@@ -107,10 +107,10 @@ export default function EventPage({
         {selectedTab === 1 && (
           <>
             {paymentInfo.map((payment) => (
-              <>
+              <div key={payment.paymentId}>
                 <PaymentByEvent key={payment.paymentId} payment={payment} />
                 <div className="divider" />
-              </>
+              </div>
             ))}
           </>
         )}

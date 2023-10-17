@@ -2,6 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import { BiSolidUser } from "react-icons/bi";
 import { PaymentType } from "../paymentFormSchema";
+import { getColorClass } from "../../../helpers/color";
 
 type Props = {
   payment: PaymentType;
@@ -41,7 +42,7 @@ export const PaymentByEvent: React.FC<Props> = ({ payment }) => {
         <div className="flex flex-row flex-wrap">
           {payment.otherNames.map((otherName, index) => (
             <span key={index} className="flex flex-row items-center mr-2">
-              <BiSolidUser fontSize={20} />
+              <BiSolidUser fontSize={20} className={getColorClass(otherName)} />
               <div>{otherName}</div>
             </span>
           ))}

@@ -49,7 +49,7 @@ export const Receiver: React.FC<Props> = ({
           全員未選択
         </button>
       </div>
-      <div className="flex flex-row flex-wrap space-x-3">
+      <div className="flex flex-row flex-wrap gap-x-2">
         {members.map((member) => {
           return (
             <label className="label cursor-pointer space-x-1">

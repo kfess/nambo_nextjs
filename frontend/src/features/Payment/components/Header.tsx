@@ -5,6 +5,7 @@ import { BsListStars } from "react-icons/bs";
 import { BiSolidCalendarStar } from "react-icons/bi";
 import { TbMoneybag } from "react-icons/tb";
 import { EventType } from "../../Event/eventSchema";
+import { getColorClass } from "../../../helpers/color";
 
 type Props = {
   eventInfo: EventType;
@@ -12,8 +13,6 @@ type Props = {
 
 export const Header: React.FC<Props> = ({ eventInfo }) => {
   const router = useRouter();
-
-  const userColors = ["blue", "purple", "red", "green"];
 
   return (
     <div className="bg-nambo-green pt-6 pb-6 px-4">
@@ -38,9 +37,7 @@ export const Header: React.FC<Props> = ({ eventInfo }) => {
                 <div key={idx} className="flex flex-row items-center mr-1">
                   <BiSolidUser
                     fontSize={20}
-                    className={`text-${
-                      userColors[idx % eventInfo.members.length]
-                    }-300`}
+                    className={getColorClass(member.name)}
                   />
                   <span className="text-sm pl-1">{member.name}</span>
                 </div>

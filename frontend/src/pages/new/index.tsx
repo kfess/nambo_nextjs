@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import dayjs from "dayjs";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TermsLink } from "../../features/Terms/components/TermsLink";
 import { Header } from "../../features/Event/components/Header";
@@ -18,6 +18,7 @@ import { MoneyUnit } from "../../features/Event/components/MoneyUnit";
 export default function NewEventPage() {
   const {
     control,
+    register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<CreateEventType>({
@@ -33,8 +34,7 @@ export default function NewEventPage() {
       moneyUnit: "100",
     },
     resolver: zodResolver(createEventSchema),
-    mode: "onBlur",
-    reValidateMode: "onBlur",
+    mode: "onSubmit",
     criteriaMode: "all",
   });
 
@@ -47,22 +47,21 @@ export default function NewEventPage() {
     //   `${process.env.REACT_APP_DB_EVENT_BASE_URL}/create/`,
     //   data
     // );
-    // setTimeout(() => {
-    //   navigate(`/event/${data.eventId}`, { replace: true });
-    // }, 2 * 1000);
     console.log(data);
     push("/event/1");
   };
+
+  console.log(errors);
 
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Header formPageType="new" />
         <div className="container mx-auto px-5">
-          <EventName control={control} errors={errors} />
+          <EventName register={register} errors={errors} />
           <Memo control={control} errors={errors} />
           <StartEndDatePicker control={control} errors={errors} />
-          <Member control={control} errors={errors} />
+          <Member register={register} control={control} errors={errors} />
           <MoneyUnit control={control} errors={errors} />
           <div className="text-center text-sm">
             <TermsLink inFooter={false} />

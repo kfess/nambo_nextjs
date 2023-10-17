@@ -5,6 +5,7 @@ import {
   useState,
   useRef,
   useLayoutEffect,
+  useEffect,
 } from "react";
 import { isBrowser, noop } from "../helpers/misc";
 
@@ -63,7 +64,10 @@ export const useLocalStorage = <T>(
     initializer.current(key)
   );
 
-  useLayoutEffect(() => {
+  // useLayoutEffect(() => {
+  //   setState(initializer.current(key));
+  // }, [key]);
+  useEffect(() => {
     setState(initializer.current(key));
   }, [key]);
 
