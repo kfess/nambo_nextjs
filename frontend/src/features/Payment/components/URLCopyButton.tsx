@@ -25,7 +25,7 @@ export const URLCopyButton: React.FC<Props> = ({ url }) => {
         className="btn w-full"
       >
         {isCopySuccess ? (
-          <span>URLをコピーしました</span>
+          <span>URLをコピーしました！</span>
         ) : (
           <div className="flex flex-row space-x-2">
             <span>URL をコピー</span>

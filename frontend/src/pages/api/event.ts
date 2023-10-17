@@ -20,6 +20,8 @@ export default function handler(
         { name: "モナモナ", ratio: 1 },
         { name: "ゴリお", ratio: 1 },
         { name: "ぶっち", ratio: 1 },
+        { name: "もちもち", ratio: 1 },
+        { name: "ぶっちゃん", ratio: 1 },
       ],
       moneyUnit: "10",
     });

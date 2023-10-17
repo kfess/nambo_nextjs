@@ -45,19 +45,19 @@ export const WhoToWhom: React.FC<Props> = ({
           >
             <div className="text-xs text-gray-400">DAREGA</div>
             <div className="flex flex-row justify-between">
-              <div className="text-2xl font-bold text-pink-800 mb-3">
+              <div className="text-xl font-bold text-pink-800 mb-3">
                 {fromName}
               </div>
               <div>
                 {sum <= 1000 ? (
                   <RiMoneyCnyCircleLine
                     fontSize={30}
-                    className="text-gray-600"
+                    className="text-gray-500"
                   />
                 ) : sum <= 10000 ? (
-                  <FaMoneyBill fontSize={30} className="text-gray-600" />
+                  <FaMoneyBill fontSize={30} className="text-gray-500" />
                 ) : (
-                  <FaMoneyBills fontSize={30} className="text-gray-600" />
+                  <FaMoneyBills fontSize={30} className="text-gray-500" />
                 )}
               </div>
             </div>

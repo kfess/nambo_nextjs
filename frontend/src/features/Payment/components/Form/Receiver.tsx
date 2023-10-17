@@ -49,7 +49,7 @@ export const Receiver: React.FC<Props> = ({
                 type="checkbox"
                 {...register("otherNames")}
                 value={member.name}
-                className="checkbox checkbox-primary checkbox-sm no-animation"
+                className="checkbox checkbox-primary checkbox-sm rounded no-animation"
               />
               <span className="label-text" />
               {member.name}

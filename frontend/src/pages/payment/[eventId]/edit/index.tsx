@@ -3,6 +3,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocalStorage } from "../../../../hooks/useLocalStorage";
 import { EventType } from "../../../../features/Event/eventSchema";
+import { PaymentType } from "../../../../features/Payment/paymentFormSchema";
 import { Header } from "../../../../features/Payment/components/Header";
 import {
   CreatePaymentType,
@@ -13,10 +14,20 @@ import { PayerName } from "../../../../features/Payment/components/Form/PayerNam
 import { Receiver } from "../../../../features/Payment/components/Form/Receiver";
 import { Money } from "../../../../features/Payment/components/Form/Money";
 
-export default function PaymentNewPage() {
+export default function EditPaymentPage() {
   const router = useRouter();
   const eventId = router.query.eventId as string;
+  const paymentId = router.query.paymentId as string;
+
   const [eventInfo] = useLocalStorage<EventType>(`eventInfo_${eventId}`);
+  const [paymentInfo] = useLocalStorage<PaymentType[]>(
+    `paymentInfo_${eventId}`
+  );
+
+  // 該当する支払い情報を取得
+  const payment = paymentInfo?.find(
+    (payment) => payment.paymentId === paymentId
+  );
 
   const {
     control,
@@ -27,20 +38,15 @@ export default function PaymentNewPage() {
   } = useForm<CreatePaymentType>({
     defaultValues: {
       eventId: eventId,
-      purpose: "",
-      name: "",
-      otherNames: [],
-      cost: 0,
+      purpose: payment.purpose || "",
+      name: payment.name || "",
+      otherNames: payment.otherNames || [],
+      cost: payment.cost || 0,
     },
     resolver: zodResolver(createPaymentSchema),
     mode: "onBlur",
     reValidateMode: "onBlur",
     criteriaMode: "all",
-  });
-
-  const payer = useWatch({
-    control,
-    name: "name",
   });
 
   if (!router.isReady || !eventInfo) {
@@ -52,7 +58,7 @@ export default function PaymentNewPage() {
       <Header eventInfo={eventInfo} />
       <div className="container mx-auto px-5">
         <div className="text-center my-5 text-xl underline underline-offset-8 decoration-nambo-green decoration-4">
-          支払い情報の追加
+          支払い情報の更新
         </div>
         <Purpose control={control} errors={errors} />
         <PayerName
@@ -82,7 +88,7 @@ export default function PaymentNewPage() {
             }}
             className="btn bg-primary hover:bg-primary-hover text-white w-1/2 no-animation"
           >
-            追加
+            更新
           </button>
         </div>
       </div>

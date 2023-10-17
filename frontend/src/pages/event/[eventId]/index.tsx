@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { EventType } from "../../../features/Event/eventSchema";
 import { Header } from "../../../features/Payment/components/Header";
-import { useLocalStorage } from "../../../hooks/useLocalStorage";
 import { PaymentType } from "../../../features/Payment/paymentFormSchema";
 import { PaymentByEvent } from "../../../features/Payment/components/PaymentByEvent";
 import { WhoToWhom } from "../../../features/Payment/components/WhoToWhom";
@@ -19,14 +18,39 @@ export default function EventPage({
 }) {
   const router = useRouter();
   const thisURL = `http://localhost:3000${router.asPath}`;
+
   // data fetched by getServerSideProps is stored in localStorage.
   // every Event Info throughout the app is get from localStorage.
   // Even if the data in localstorage is maliciously modified,
   // it will be overwritten by the data fetched by getServerSideProps. So it is not a problem.
-  const [eventInfo] = useLocalStorage(
-    `eventInfo_${event.eventId}`, // key (UUID), which is considered to be unique for each event.
-    event
-  );
+  const [eventInfo, setEventInfo] = useState<EventType>(event);
+  useEffect(() => {
+    const storedEventInfo = localStorage.getItem(`eventInfo_${event.eventId}`);
+    const storedData = storedEventInfo ? JSON.parse(storedEventInfo) : null;
+    if (JSON.stringify(storedData) !== JSON.stringify(event)) {
+      localStorage.setItem(`eventInfo_${event.eventId}`, JSON.stringify(event));
+      setEventInfo(event);
+    }
+  }, [event]);
+
+  // data fetched by getServerSideProps is stored in localStorage.
+  // every Event Info throughout the app is get from localStorage.
+  // Even if the data in localstorage is maliciously modified,
+  // it will be overwritten by the data fetched by getServerSideProps. So it is not a problem.
+  const [paymentInfo, setPaymentInfo] = useState<PaymentType[]>(payments);
+  useEffect(() => {
+    const storedPaymentInfo = localStorage.getItem(
+      `paymentInfo_${event.eventId}`
+    );
+    const storedData = storedPaymentInfo ? JSON.parse(storedPaymentInfo) : null;
+    if (JSON.stringify(storedData) !== JSON.stringify(payments)) {
+      localStorage.setItem(
+        `paymentInfo_${event.eventId}`,
+        JSON.stringify(payments)
+      );
+      setPaymentInfo(payments);
+    }
+  }, [payments]);
 
   const [selectedTab, setSelectedTab] = useState(1);
 
@@ -73,7 +97,7 @@ export default function EventPage({
           <>
             {payments && eventInfo && (
               <WhoToWhom
-                payments={payments}
+                payments={paymentInfo}
                 members={eventInfo.members}
                 moneyUnit={eventInfo.moneyUnit}
               />
@@ -82,7 +106,7 @@ export default function EventPage({
         )}
         {selectedTab === 1 && (
           <>
-            {payments.map((payment) => (
+            {paymentInfo.map((payment) => (
               <>
                 <PaymentByEvent key={payment.paymentId} payment={payment} />
                 <div className="divider" />
@@ -91,9 +115,7 @@ export default function EventPage({
           </>
         )}
         {selectedTab === 2 && (
-          <>
-            <TotalExpense payments={payments} members={eventInfo.members} />
-          </>
+          <TotalExpense payments={paymentInfo} members={eventInfo.members} />
         )}
       </div>
     </>
