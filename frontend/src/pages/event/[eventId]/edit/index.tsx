@@ -90,7 +90,7 @@ export default function EditEventPage() {
         <Header formPageType="edit" />
         <div className="container mx-auto px-5">
           <EventName register={register} errors={errors} />
-          <Memo control={control} errors={errors} />
+          <Memo register={register} errors={errors} />
           <StartEndDatePicker control={control} errors={errors} />
           <MemberInEditMode
             control={control}
@@ -98,7 +98,7 @@ export default function EditEventPage() {
             errors={errors}
             unEditableMembers={unEditableMembers}
           />
-          <MoneyUnit control={control} errors={errors} />
+          <MoneyUnit register={register} errors={errors} />
           <div className="text-center text-sm">
             <TermsLink inFooter={false} />
             に同意のうえ
