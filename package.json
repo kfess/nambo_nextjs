@@ -1,0 +1,79 @@
+{
+  "name": "nambo.",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Next.js Project for Nambo.",
+  "homepage": "https://github.com/kfess/nambo_nextjs",
+  "bugs": {
+    "url": "https://github.com/kfess/nambo_nextjs/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kfess/nambo_nextjs"
+  },
+  "license": "MIT",
+  "author": "kfess",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "json-server": "json-server --watch db.json --port 3001",
+    "prepare": "husky install"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write"
+    ],
+    ".eslintrc.yml": [
+      "prettier --write"
+    ],
+    "package.json": [
+      "prettier --write",
+      "sort-package-json"
+    ]
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "dependencies": {
+    "@hookform/resolvers": "^3.3.2",
+    "@types/react-datepicker": "^4.19.0",
+    "axios": "^1.5.1",
+    "dayjs": "^1.11.10",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "md5": "^2.3.0",
+    "next": "^12.3.4",
+    "prettier": "^3.1.0",
+    "qrcode.react": "^3.1.0",
+    "react": "^18.2.0",
+    "react-datepicker": "^4.20.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.47.0",
+    "react-icons": "^4.11.0",
+    "react-query": "^3.39.3",
+    "react-share": "^4.4.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "20.8.4",
+    "@types/react": "18.2.28",
+    "autoprefixer": "^10.4.16",
+    "daisyui": "^3.9.2",
+    "json-server": "^0.17.4",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.3",
+    "typescript": "5.2.2",
+    "husky": "^8.0.0"
+  }
+}
