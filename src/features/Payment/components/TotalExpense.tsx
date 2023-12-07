@@ -10,15 +10,21 @@ type Props = {
 
 export const TotalExpense: React.FC<Props> = ({ payments, members }) => {
   const uniqueNames = Array.from(members.map((member) => member.name));
-  const payerCost = payments.reduce((prev, cur) => {
-    prev = uniqueNames.reduce((acc, name) => {
-      const x = cur.name === name ? cur.cost : 0;
-      const y = prev[name] ?? 0;
-      acc[name] = x + y;
-      return acc;
-    }, {} as { [name: string]: number });
-    return prev;
-  }, {} as { [name: string]: number });
+  const payerCost = payments.reduce(
+    (prev, cur) => {
+      prev = uniqueNames.reduce(
+        (acc, name) => {
+          const x = cur.name === name ? cur.cost : 0;
+          const y = prev[name] ?? 0;
+          acc[name] = x + y;
+          return acc;
+        },
+        {} as { [name: string]: number }
+      );
+      return prev;
+    },
+    {} as { [name: string]: number }
+  );
 
   const totalCost = uniqueNames.reduce((prev, name) => {
     prev += payerCost[name];

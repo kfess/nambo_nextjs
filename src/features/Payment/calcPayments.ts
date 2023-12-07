@@ -12,22 +12,28 @@ export const calcPaymentByAction = (
 ) => {
   const myCost = { [member.name]: cost };
 
-  const otherMemberCost = otherMember.reduce((prev, member) => {
-    const totalRatio = calcTotalRatio(otherMember);
-    prev[member.name] = (-1 * member.ratio * cost) / totalRatio;
-    return prev;
-  }, {} as { [name: string]: number });
+  const otherMemberCost = otherMember.reduce(
+    (prev, member) => {
+      const totalRatio = calcTotalRatio(otherMember);
+      prev[member.name] = (-1 * member.ratio * cost) / totalRatio;
+      return prev;
+    },
+    {} as { [name: string]: number }
+  );
 
   const uniqueNameKeys = Array.from(
     new Set<string>(Object.keys(myCost).concat(Object.keys(otherMemberCost)))
   );
 
-  const totalCost = uniqueNameKeys.reduce((acc, value) => {
-    const x = myCost[value] ?? 0;
-    const y = otherMemberCost[value] ?? 0;
-    acc[value] = x + y;
-    return acc;
-  }, {} as { [name: string]: number });
+  const totalCost = uniqueNameKeys.reduce(
+    (acc, value) => {
+      const x = myCost[value] ?? 0;
+      const y = otherMemberCost[value] ?? 0;
+      acc[value] = x + y;
+      return acc;
+    },
+    {} as { [name: string]: number }
+  );
 
   return totalCost;
 };
@@ -39,24 +45,30 @@ export const calcPaymentByTotalAction = (
 ) => {
   const uniqueNames = Array.from(members.map((member) => member.name));
 
-  const totalCost = data.reduce((prev, cur) => {
-    /** 支払い者 */
-    const myName = members.find((member) => member.name === cur.name);
+  const totalCost = data.reduce(
+    (prev, cur) => {
+      /** 支払い者 */
+      const myName = members.find((member) => member.name === cur.name);
 
-    /**支払われた側 */
-    const otherNames = members.filter((member) => member.name !== myName);
+      /**支払われた側 */
+      const otherNames = members.filter((member) => member.name !== myName);
 
-    const costByAction = calcPaymentByAction(myName, otherNames, cur.cost);
+      const costByAction = calcPaymentByAction(myName, otherNames, cur.cost);
 
-    prev = uniqueNames.reduce((acc, name) => {
-      const x = costByAction[name] ?? 0;
-      const y = prev[name] ?? 0;
-      acc[name] = x + y;
-      return acc;
-    }, {} as { [name: string]: number });
+      prev = uniqueNames.reduce(
+        (acc, name) => {
+          const x = costByAction[name] ?? 0;
+          const y = prev[name] ?? 0;
+          acc[name] = x + y;
+          return acc;
+        },
+        {} as { [name: string]: number }
+      );
 
-    return prev;
-  }, {} as { [name: string]: number });
+      return prev;
+    },
+    {} as { [name: string]: number }
+  );
 
   return totalCost;
 };
@@ -114,11 +126,14 @@ export const calcExpenseByAction = (
   cost: number,
   calcRatio: boolean = true
 ) => {
-  const otherMemberCost = otherMember.reduce((prev, member) => {
-    const totalRatio = calcTotalRatio(otherMember, calcRatio);
-    prev[member.name] = ((calcRatio ? member.ratio : 1) * cost) / totalRatio;
-    return prev;
-  }, {} as { [name: string]: number });
+  const otherMemberCost = otherMember.reduce(
+    (prev, member) => {
+      const totalRatio = calcTotalRatio(otherMember, calcRatio);
+      prev[member.name] = ((calcRatio ? member.ratio : 1) * cost) / totalRatio;
+      return prev;
+    },
+    {} as { [name: string]: number }
+  );
 
   return otherMemberCost;
 };
@@ -130,27 +145,33 @@ export const calcExpenseByTotalAction = (
 ) => {
   const uniqueNames = Array.from(members.map((member) => member.name));
 
-  const totalCost = data.reduce((prev, cur) => {
-    /**支払われた側 */
-    const otherNames = members.filter((member) =>
-      cur.otherNames.includes(member.name)
-    );
+  const totalCost = data.reduce(
+    (prev, cur) => {
+      /**支払われた側 */
+      const otherNames = members.filter((member) =>
+        cur.otherNames.includes(member.name)
+      );
 
-    const costByAction = calcExpenseByAction(
-      otherNames,
-      cur.cost,
-      (calcRatio = calcRatio)
-    );
+      const costByAction = calcExpenseByAction(
+        otherNames,
+        cur.cost,
+        (calcRatio = calcRatio)
+      );
 
-    prev = uniqueNames.reduce((acc, name) => {
-      const x = costByAction[name] ?? 0;
-      const y = prev[name] ?? 0;
-      acc[name] = x + y;
-      return acc;
-    }, {} as { [name: string]: number });
+      prev = uniqueNames.reduce(
+        (acc, name) => {
+          const x = costByAction[name] ?? 0;
+          const y = prev[name] ?? 0;
+          acc[name] = x + y;
+          return acc;
+        },
+        {} as { [name: string]: number }
+      );
 
-    return prev;
-  }, {} as { [name: string]: number });
+      return prev;
+    },
+    {} as { [name: string]: number }
+  );
 
   return totalCost;
 };
