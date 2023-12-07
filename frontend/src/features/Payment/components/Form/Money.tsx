@@ -1,7 +1,7 @@
 import React from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { CreatePaymentType } from "../../paymentFormSchema";
-import { ErrorMessage } from "../../../../components/shared/ErrorMessage";
+import { CreatePaymentType } from "@/features/Payment/paymentFormSchema";
+import { ErrorMessage } from "@/components/shared/ErrorMessage";
 
 type Props = {
   register: UseFormRegister<CreatePaymentType>;

@@ -4,8 +4,8 @@ import { BiSolidUser } from "react-icons/bi";
 import { BsListStars } from "react-icons/bs";
 import { BiSolidCalendarStar } from "react-icons/bi";
 import { TbMoneybag } from "react-icons/tb";
-import { EventType } from "../../Event/eventSchema";
-import { getColorClass } from "../../../helpers/color";
+import { EventType } from "@/features/Event/eventSchema";
+import { getColorClass } from "@/helpers/color";
 
 type Props = {
   eventInfo: EventType;

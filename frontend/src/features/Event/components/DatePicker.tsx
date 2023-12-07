@@ -3,8 +3,8 @@ import { Control, Controller, FieldErrors } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from "dayjs";
-import { CreateEventType } from "../eventSchema";
-import { ErrorMessage } from "../../../components/shared/ErrorMessage";
+import { CreateEventType } from "@/features/Event/eventSchema";
+import { ErrorMessage } from "@/components/shared/ErrorMessage";
 
 type Props = {
   control: Control<CreateEventType>;

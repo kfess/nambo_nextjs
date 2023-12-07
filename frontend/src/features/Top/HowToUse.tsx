@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Chip from "../../components/shared/Chip";
+import Chip from "@/components/shared/Chip";
 
 const messages = [
   "イベントを作成します。",

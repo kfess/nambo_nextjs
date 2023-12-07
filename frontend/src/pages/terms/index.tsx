@@ -1,4 +1,4 @@
-import { TermsOfService } from "../../features/Terms/components/TermsOfService";
+import { TermsOfService } from "@/features/Terms/components/TermsOfService";
 
 export const TermsPage = () => {
   return (

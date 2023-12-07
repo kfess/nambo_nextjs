@@ -1,8 +1,8 @@
 import React from "react";
 import { FiUpload } from "react-icons/fi";
-import { URLCopyButton } from "./URLCopyButton";
-import { QRCodeButton } from "./QRCodeButton";
-import { LINEShareButton } from "./LINEShareButton";
+import { URLCopyButton } from "@/features/Payment/components/URLCopyButton";
+import { QRCodeButton } from "@/features/Payment/components/QRCodeButton";
+import { LINEShareButton } from "@/features/Payment/components/LINEShareButton";
 
 type Props = {
   url: string;

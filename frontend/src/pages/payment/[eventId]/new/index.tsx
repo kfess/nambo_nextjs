@@ -1,16 +1,16 @@
 import { useRouter } from "next/router";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EventType } from "../../../../features/Event/eventSchema";
-import { Header } from "../../../../features/Payment/components/Header";
+import { EventType } from "@/features/Event/eventSchema";
+import { Header } from "@/features/Payment/components/Header";
 import {
   CreatePaymentType,
   createPaymentSchema,
-} from "../../../../features/Payment/paymentFormSchema";
-import { Purpose } from "../../../../features/Payment/components/Form/Purpose";
-import { PayerName } from "../../../../features/Payment/components/Form/PayerName";
-import { Receiver } from "../../../../features/Payment/components/Form/Receiver";
-import { Money } from "../../../../features/Payment/components/Form/Money";
+} from "@/features/Payment/paymentFormSchema";
+import { Purpose } from "@/features/Payment/components/Form/Purpose";
+import { PayerName } from "@/features/Payment/components/Form/PayerName";
+import { Receiver } from "@/features/Payment/components/Form/Receiver";
+import { Money } from "@/features/Payment/components/Form/Money";
 import { InferGetServerSidePropsType } from "next";
 
 export default function PaymentNewPage({

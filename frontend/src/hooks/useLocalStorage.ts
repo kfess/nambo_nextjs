@@ -7,7 +7,7 @@ import {
   useLayoutEffect,
   useEffect,
 } from "react";
-import { isBrowser, noop } from "../helpers/misc";
+import { isBrowser, noop } from "@/helpers/misc";
 
 type ParserOptions<T> =
   | {

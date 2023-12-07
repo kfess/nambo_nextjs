@@ -1,8 +1,8 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { BiSolidUser } from "react-icons/bi";
-import { PaymentType } from "../paymentFormSchema";
-import { getColorClass } from "../../../helpers/color";
+import { PaymentType } from "@/features/Payment/paymentFormSchema";
+import { getColorClass } from "@/helpers/color";
 
 type Props = {
   payment: PaymentType;

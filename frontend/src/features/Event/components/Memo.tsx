@@ -1,7 +1,7 @@
 import React from "react";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
-import { ErrorMessage } from "../../../components/shared/ErrorMessage";
-import { CreateEventType } from "../eventSchema";
+import { ErrorMessage } from "@/components/shared/ErrorMessage";
+import { CreateEventType } from "@/features/Event/eventSchema";
 
 type Props = {
   register: UseFormRegister<CreateEventType>;

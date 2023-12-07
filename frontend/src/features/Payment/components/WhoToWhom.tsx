@@ -2,14 +2,14 @@ import React from "react";
 import { FaMoneyBill } from "react-icons/fa";
 import { FaMoneyBills } from "react-icons/fa6";
 import { RiMoneyCnyCircleLine } from "react-icons/ri";
-import { Member, MoneyUnit } from "../../Event/eventSchema";
-import { PaymentType } from "../paymentFormSchema";
+import { Member, MoneyUnit } from "@/features/Event/eventSchema";
+import { PaymentType } from "@/features/Payment/paymentFormSchema";
 import {
   calcPayBackMoney,
   calcPaymentByTotalAction,
   PayBackMoney,
-} from "../calcPayments";
-import { getColorClass } from "../../../helpers/color";
+} from "@/features/Payment/calcPayments";
+import { getColorClass } from "@/helpers/color";
 
 type Props = {
   payments: PaymentType[];

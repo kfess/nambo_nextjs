@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { PaymentType } from "../paymentFormSchema";
-import { Member } from "../../Event/eventSchema";
-import { calcExpenseByTotalAction } from "../calcPayments";
+import { PaymentType } from "@/features/Payment/paymentFormSchema";
+import { Member } from "@/features/Event/eventSchema";
+import { calcExpenseByTotalAction } from "@/features/Payment/calcPayments";
 
 type Props = {
   payments: PaymentType[];

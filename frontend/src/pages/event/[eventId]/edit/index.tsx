@@ -3,18 +3,18 @@ import { useRouter } from "next/router";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TermsLink } from "../../../../features/Terms/components/TermsLink";
-import { Header } from "../../../../features/Event/components/Header";
+import { TermsLink } from "@/features/Terms/components/TermsLink";
+import { Header } from "@/features/Event/components/Header";
 import {
   EventType,
   generateEditEventSchema,
-} from "../../../../features/Event/eventSchema";
-import { EventName } from "../../../../features/Event/components/EventName";
-import { Memo } from "../../../../features/Event/components/Memo";
-import { StartEndDatePicker } from "../../../../features/Event/components/DatePicker";
-import { MoneyUnit } from "../../../../features/Event/components/MoneyUnit";
-import { PaymentType } from "../../../../features/Payment/paymentFormSchema";
-import { MemberInEditMode } from "../../../../features/Event/components/MemberInEditMode";
+} from "@/features/Event/eventSchema";
+import { EventName } from "@/features/Event/components/EventName";
+import { Memo } from "@/features/Event/components/Memo";
+import { StartEndDatePicker } from "@/features/Event/components/DatePicker";
+import { MoneyUnit } from "@/features/Event/components/MoneyUnit";
+import { PaymentType } from "@/features/Payment/paymentFormSchema";
+import { MemberInEditMode } from "@/features/Event/components/MemberInEditMode";
 import dayjs from "dayjs";
 
 export default function EditEventPage({

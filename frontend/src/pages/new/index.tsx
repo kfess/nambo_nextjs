@@ -3,18 +3,18 @@ import { useRouter } from "next/router";
 import dayjs from "dayjs";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TermsLink } from "../../features/Terms/components/TermsLink";
-import { Header } from "../../features/Event/components/Header";
+import { TermsLink } from "@/features/Terms/components/TermsLink";
+import { Header } from "@/features/Event/components/Header";
 import {
   createEventSchema,
   CreateEventType,
-} from "../../features/Event/eventSchema";
-import { EventName } from "../../features/Event/components/EventName";
-import { Memo } from "../../features/Event/components/Memo";
-import { StartEndDatePicker } from "../../features/Event/components/DatePicker";
-import { Member } from "../../features/Event/components/Member";
-import { MoneyUnit } from "../../features/Event/components/MoneyUnit";
-import { useAddEvent } from "../../features/Event/hooks/useAddEvent";
+} from "@/features/Event/eventSchema";
+import { EventName } from "@/features/Event/components/EventName";
+import { Memo } from "@/features/Event/components/Memo";
+import { StartEndDatePicker } from "@/features/Event/components/DatePicker";
+import { Member } from "@/features/Event/components/Member";
+import { MoneyUnit } from "@/features/Event/components/MoneyUnit";
+import { useAddEvent } from "@/features/Event/hooks/useAddEvent";
 
 export default function NewEventPage() {
   const {

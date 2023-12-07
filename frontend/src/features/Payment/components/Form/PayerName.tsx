@@ -1,8 +1,8 @@
 import React from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { CreatePaymentType } from "../../paymentFormSchema";
-import { ErrorMessage } from "../../../../components/shared/ErrorMessage";
-import { EventType } from "../../../Event/eventSchema";
+import { CreatePaymentType } from "@/features/Payment/paymentFormSchema";
+import { ErrorMessage } from "@/components/shared/ErrorMessage";
+import { EventType } from "@/features/Event/eventSchema";
 
 type Props = {
   control: Control<CreatePaymentType>;

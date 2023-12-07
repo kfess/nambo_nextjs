@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PaymentType } from "../../features/Payment/paymentFormSchema";
+import { PaymentType } from "@/features/Payment/paymentFormSchema";
 
 export default function handler(
   req: NextApiRequest,

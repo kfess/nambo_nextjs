@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
-import { EventType } from "../../../features/Event/eventSchema";
-import { Header } from "../../../features/Payment/components/Header";
-import { PaymentType } from "../../../features/Payment/paymentFormSchema";
-import { PaymentByEvent } from "../../../features/Payment/components/PaymentByEvent";
-import { WhoToWhom } from "../../../features/Payment/components/WhoToWhom";
-import { TotalExpense } from "../../../features/Payment/components/TotalExpense";
-import { Share } from "../../../features/Payment/components/Share";
+import { EventType } from "@/features/Event/eventSchema";
+import { Header } from "@/features/Payment/components/Header";
+import { PaymentType } from "@/features/Payment/paymentFormSchema";
+import { PaymentByEvent } from "@/features/Payment/components/PaymentByEvent";
+import { WhoToWhom } from "@/features/Payment/components/WhoToWhom";
+import { TotalExpense } from "@/features/Payment/components/TotalExpense";
+import { Share } from "@/features/Payment/components/Share";
 
 export default function EventPage({
   event,
