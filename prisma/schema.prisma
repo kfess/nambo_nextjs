@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Event {
+  id        Int       @id @default(autoincrement())
+  eventId   String    @db.Uuid
+  eventName String
+  memo      String
+  fromDate  DateTime
+  toDate    DateTime
+  moneyUnit String
+  members   Member[]
+  Payment   Payment[]
+}
+
+model Member {
+  id      Int    @id @default(autoincrement())
+  name    String
+  ratio   Int
+  eventId Int
+  event   Event  @relation(fields: [eventId], references: [id])
+}
+
+model Payment {
+  id         Int      @id @default(autoincrement())
+  paymentId  String   @db.Uuid
+  eventId    Int
+  event      Event    @relation(fields: [eventId], references: [id])
+  purpose    String
+  payer       String
+  Payees     Payee[]
+  cost       Int
+}
+
+model Payee {
+  id        Int     @id @default(autoincrement())
+  paymentId Int     // Paymentテーブルとのリレーション
+  payment   Payment @relation(fields: [paymentId], references: [id])
+  name      String  // 支払いに関連する人の名前
+}
+
