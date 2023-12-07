@@ -1,9 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { ZodError } from "zod";
 import { EventType } from "../../features/Event/eventSchema";
+import { createEventSchema } from "../../features/Event/eventSchema";
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<EventType>
+  res: NextApiResponse
 ) {
   if (req.method === "GET") {
     // body から eventId を取得して、DB からイベント情報を取得する
@@ -26,5 +28,18 @@ export default function handler(
       moneyUnit: "10",
     });
   } else if (req.method === "POST") {
+    // validation of request body
+    try {
+      await createEventSchema.parseAsync(req.body);
+      // TODO: DB にイベント情報を保存する
+      res.status(201).json({ ...req.body, eventId: "1" } as EventType);
+    } catch (error: unknown) {
+      if (error instanceof ZodError) {
+        res.status(400).json({ error: "Failed to validate your request." });
+      } else {
+        res.status(500).json({ error: "Unknown error" });
+      }
+    }
+  } else if (req.method === "PUT") {
   }
 }

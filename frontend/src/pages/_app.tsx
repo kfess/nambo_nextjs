@@ -1,8 +1,16 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
+import { QueryClientProvider, QueryClient } from "react-query";
 import "../styles/globals.css";
 import Layout from "../components/layout";
-// const Shippori =
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      suspense: false,
+    },
+  },
+});
 
 const App = ({ Component, pageProps }: AppProps) => (
   <>
@@ -10,9 +18,11 @@ const App = ({ Component, pageProps }: AppProps) => (
       <title />
       <meta></meta>
     </Head>
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <QueryClientProvider client={queryClient}>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </QueryClientProvider>
   </>
 );
 

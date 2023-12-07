@@ -14,6 +14,7 @@ import { Memo } from "../../features/Event/components/Memo";
 import { StartEndDatePicker } from "../../features/Event/components/DatePicker";
 import { Member } from "../../features/Event/components/Member";
 import { MoneyUnit } from "../../features/Event/components/MoneyUnit";
+import { useAddEvent } from "../../features/Event/hooks/useAddEvent";
 
 export default function NewEventPage() {
   const {
@@ -38,20 +39,15 @@ export default function NewEventPage() {
     criteriaMode: "all",
   });
 
-  const { push } = useRouter();
+  const router = useRouter();
+
+  const { mutate, isLoading, error } = useAddEvent();
 
   const onSubmit: SubmitHandler<CreateEventType> = async (
     data: CreateEventType
   ) => {
-    // await postEventData(
-    //   `${process.env.REACT_APP_DB_EVENT_BASE_URL}/create/`,
-    //   data
-    // );
-    console.log(data);
-    push("/event/1");
+    mutate(data);
   };
-
-  console.log(errors);
 
   return (
     <div>
@@ -72,10 +68,20 @@ export default function NewEventPage() {
             disabled={isSubmitting}
             className="btn bg-primary hover:bg-primary-hover text-white w-full mt-1 no-animation"
           >
+            {isLoading && (
+              <span className="loading loading-spinner loading-xs" />
+            )}{" "}
             イベント作成
           </button>
         </div>
       </form>
+      {error && (
+        <div className="toast toast-end">
+          <div className="alert alert-error">
+            <span>イベントの作成に失敗しました。</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
