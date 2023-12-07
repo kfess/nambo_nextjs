@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocalStorage } from "../../../../hooks/useLocalStorage";
 import { EventType } from "../../../../features/Event/eventSchema";
 import { Header } from "../../../../features/Payment/components/Header";
 import {
@@ -12,11 +11,15 @@ import { Purpose } from "../../../../features/Payment/components/Form/Purpose";
 import { PayerName } from "../../../../features/Payment/components/Form/PayerName";
 import { Receiver } from "../../../../features/Payment/components/Form/Receiver";
 import { Money } from "../../../../features/Payment/components/Form/Money";
+import { InferGetServerSidePropsType } from "next";
 
-export default function PaymentNewPage() {
+export default function PaymentNewPage({
+  event,
+}: InferGetServerSidePropsType<typeof getServerSideProps> & {
+  event: EventType;
+}) {
   const router = useRouter();
   const eventId = router.query.eventId as string;
-  const [eventInfo] = useLocalStorage<EventType>(`eventInfo_${eventId}`);
 
   const {
     control,
@@ -43,13 +46,13 @@ export default function PaymentNewPage() {
     name: "name",
   });
 
-  if (!router.isReady || !eventInfo) {
+  if (!router.isReady || !event) {
     return null;
   }
 
   return (
     <div>
-      <Header eventInfo={eventInfo} />
+      <Header eventInfo={event} />
       <div className="container mx-auto px-5">
         <div className="text-center my-5 text-xl underline underline-offset-8 decoration-nambo-green decoration-4">
           支払い情報の追加
@@ -58,13 +61,13 @@ export default function PaymentNewPage() {
         <PayerName
           control={control}
           errors={errors}
-          payerCandidates={eventInfo.members ?? []}
+          payerCandidates={event.members ?? []}
         />
         <Receiver
           register={register}
           errors={errors}
           setValue={setValue}
-          members={eventInfo.members ?? []}
+          members={event.members ?? []}
         />
         <Money register={register} errors={errors} />
         <div className="flex flex-row w-full space-x-2 my-10">
@@ -89,3 +92,18 @@ export default function PaymentNewPage() {
     </div>
   );
 }
+
+export const getServerSideProps = async (context: any) => {
+  const { eventId } = context.params;
+
+  const eventUrl = "http://localhost:3000/api/event";
+  const eventData = await fetch(eventUrl).then((res) => res.json());
+
+  try {
+    return {
+      props: {
+        event: eventData,
+      },
+    };
+  } catch (error) {}
+};

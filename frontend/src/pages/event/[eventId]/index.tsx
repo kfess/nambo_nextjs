@@ -19,49 +19,16 @@ export default function EventPage({
   const router = useRouter();
   const thisURL = `http://localhost:3000${router.asPath}`;
 
-  // data fetched by getServerSideProps is stored in localStorage.
-  // every Event Info throughout the app is get from localStorage.
-  // Even if the data in localstorage is maliciously modified,
-  // it will be overwritten by the data fetched by getServerSideProps. So it is not a problem.
-  const [eventInfo, setEventInfo] = useState<EventType>(event);
-  useEffect(() => {
-    const storedEventInfo = localStorage.getItem(`eventInfo_${event.eventId}`);
-    const storedData = storedEventInfo ? JSON.parse(storedEventInfo) : null;
-    if (JSON.stringify(storedData) !== JSON.stringify(event)) {
-      localStorage.setItem(`eventInfo_${event.eventId}`, JSON.stringify(event));
-      setEventInfo(event);
-    }
-  }, [event]);
-
-  // data fetched by getServerSideProps is stored in localStorage.
-  // every Event Info throughout the app is get from localStorage.
-  // Even if the data in localstorage is maliciously modified,
-  // it will be overwritten by the data fetched by getServerSideProps. So it is not a problem.
-  const [paymentInfo, setPaymentInfo] = useState<PaymentType[]>(payments);
-  useEffect(() => {
-    const storedPaymentInfo = localStorage.getItem(
-      `paymentInfo_${event.eventId}`
-    );
-    const storedData = storedPaymentInfo ? JSON.parse(storedPaymentInfo) : null;
-    if (JSON.stringify(storedData) !== JSON.stringify(payments)) {
-      localStorage.setItem(
-        `paymentInfo_${event.eventId}`,
-        JSON.stringify(payments)
-      );
-      setPaymentInfo(payments);
-    }
-  }, [payments]);
-
   const [selectedTab, setSelectedTab] = useState(1);
 
   return (
     <>
-      <Header eventInfo={eventInfo} />
+      <Header eventInfo={event} />
       <Share url={thisURL} />
       <div className="container mx-auto px-2 ">
         <button
           onClick={() => {
-            router.push(`/payment/${eventInfo.eventId}/new`);
+            router.push(`/payment/${event.eventId}/new`);
           }}
           className="btn w-full bg-primary hover:bg-primary-hover text-white my-3"
         >
@@ -95,18 +62,18 @@ export default function EventPage({
         </div>
         {selectedTab === 0 && (
           <>
-            {payments && eventInfo && (
+            {payments && event && (
               <WhoToWhom
-                payments={paymentInfo}
-                members={eventInfo.members}
-                moneyUnit={eventInfo.moneyUnit}
+                payments={payments}
+                members={event.members}
+                moneyUnit={event.moneyUnit}
               />
             )}
           </>
         )}
         {selectedTab === 1 && (
           <>
-            {paymentInfo.map((payment) => (
+            {payments.map((payment) => (
               <div key={payment.paymentId}>
                 <PaymentByEvent key={payment.paymentId} payment={payment} />
                 <div className="divider" />
@@ -115,7 +82,7 @@ export default function EventPage({
           </>
         )}
         {selectedTab === 2 && (
-          <TotalExpense payments={paymentInfo} members={eventInfo.members} />
+          <TotalExpense payments={payments} members={event.members} />
         )}
       </div>
     </>
@@ -124,10 +91,12 @@ export default function EventPage({
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const eventUrl = "http://localhost:3000/api/event";
-  const eventData = await fetch(eventUrl).then((r) => r.json());
+  const eventData = (await fetch(eventUrl).then((r) => r.json())) as EventType;
 
   const paymentUrl = "http://localhost:3000/api/payment";
-  const paymentsData = await fetch(paymentUrl).then((r) => r.json());
+  const paymentsData = (await fetch(paymentUrl).then((r) =>
+    r.json()
+  )) as PaymentType[];
 
   try {
     return {

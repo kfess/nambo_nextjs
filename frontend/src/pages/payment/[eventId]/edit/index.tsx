@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import type { InferGetServerSidePropsType } from "next";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocalStorage } from "../../../../hooks/useLocalStorage";
 import { EventType } from "../../../../features/Event/eventSchema";
 import { PaymentType } from "../../../../features/Payment/paymentFormSchema";
 import { Header } from "../../../../features/Payment/components/Header";
@@ -15,19 +15,22 @@ import { PayerName } from "../../../../features/Payment/components/Form/PayerNam
 import { Receiver } from "../../../../features/Payment/components/Form/Receiver";
 import { Money } from "../../../../features/Payment/components/Form/Money";
 
-export default function EditPaymentPage() {
+export default function EditPaymentPage({
+  event,
+  payments,
+}: InferGetServerSidePropsType<typeof getServerSideProps> & {
+  event: EventType;
+  payments: PaymentType[];
+}) {
+  console.log(event, payments);
+
   const router = useRouter();
   const eventId = router.query.eventId as string;
   const paymentId = router.query.paymentId as string;
 
-  const [eventInfo] = useLocalStorage<EventType>(`eventInfo_${eventId}`);
-  const [paymentInfo] = useLocalStorage<PaymentType[]>(
-    `paymentInfo_${eventId}`
-  );
-
   // 該当する支払い情報を取得
   const payment =
-    paymentInfo?.find((payment) => payment.paymentId === paymentId) ??
+    payments?.find((payment) => payment.paymentId === paymentId) ??
     ({} as PaymentType);
 
   const {
@@ -57,15 +60,15 @@ export default function EditPaymentPage() {
       setValue("otherNames", payment.otherNames);
       setValue("cost", payment.cost);
     }
-  }, [eventInfo, paymentInfo, setValue]);
+  }, [event, payments, setValue]);
 
-  if (!router.isReady || !eventInfo || !paymentInfo) {
+  if (!router.isReady) {
     return null;
   }
 
   return (
     <div>
-      <Header eventInfo={eventInfo} />
+      <Header eventInfo={event} />
       <div className="container mx-auto px-5">
         <div className="text-center my-5 text-xl underline underline-offset-8 decoration-nambo-green decoration-4">
           支払い情報の更新
@@ -74,13 +77,13 @@ export default function EditPaymentPage() {
         <PayerName
           control={control}
           errors={errors}
-          payerCandidates={eventInfo.members ?? []}
+          payerCandidates={event.members ?? []}
         />
         <Receiver
           register={register}
           errors={errors}
           setValue={setValue}
-          members={eventInfo.members ?? []}
+          members={event.members ?? []}
         />
         <Money register={register} errors={errors} />
         <div className="flex flex-row w-full space-x-2 my-10">
@@ -105,3 +108,26 @@ export default function EditPaymentPage() {
     </div>
   );
 }
+
+export const getServerSideProps = async (context: any) => {
+  const { eventId, paymentId } = context.params;
+
+  const eventUrl = "http://localhost:3000/api/event";
+  const eventData = (await fetch(eventUrl).then((res) =>
+    res.json()
+  )) as EventType;
+
+  const paymentUrl = "http://localhost:3000/api/payment";
+  const paymentsData = (await fetch(paymentUrl).then((res) =>
+    res.json()
+  )) as PaymentType[];
+
+  try {
+    return {
+      props: {
+        event: eventData,
+        payments: paymentsData,
+      },
+    };
+  } catch (error) {}
+};

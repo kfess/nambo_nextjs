@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
+import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TermsLink } from "../../../../features/Terms/components/TermsLink";
@@ -12,22 +13,22 @@ import { EventName } from "../../../../features/Event/components/EventName";
 import { Memo } from "../../../../features/Event/components/Memo";
 import { StartEndDatePicker } from "../../../../features/Event/components/DatePicker";
 import { MoneyUnit } from "../../../../features/Event/components/MoneyUnit";
-import { useLocalStorage } from "../../../../hooks/useLocalStorage";
 import { PaymentType } from "../../../../features/Payment/paymentFormSchema";
 import { MemberInEditMode } from "../../../../features/Event/components/MemberInEditMode";
 import dayjs from "dayjs";
 
-export default function EditEventPage() {
+export default function EditEventPage({
+  event,
+  payments,
+}: InferGetServerSidePropsType<typeof getServerSideProps> & {
+  event: EventType;
+  payments: PaymentType[];
+}) {
   const router = useRouter();
   const { eventId } = router.query;
 
-  const [eventInfo] = useLocalStorage<EventType>(`eventInfo_${eventId}`);
-  const [paymentInfo] = useLocalStorage<PaymentType[]>(
-    `paymentInfo_${eventId}`
-  );
-
   const unEditableMembers = Array.from(
-    (paymentInfo ?? []).reduce((set, payment) => {
+    (payments ?? []).reduce((set, payment) => {
       set.add(payment.name);
       payment.otherNames.forEach((name) => set.add(name));
       return set;
@@ -43,12 +44,12 @@ export default function EditEventPage() {
     setValue,
   } = useForm<EventType>({
     defaultValues: {
-      eventName: eventInfo?.eventName,
-      memo: eventInfo?.memo,
-      fromDate: eventInfo?.fromDate ?? dayjs().format("YYYY/MM/DD"),
-      toDate: eventInfo?.toDate ?? dayjs().format("YYYY/MM/DD"),
-      members: eventInfo?.members,
-      moneyUnit: eventInfo?.moneyUnit,
+      eventName: event?.eventName,
+      memo: event?.memo,
+      fromDate: event?.fromDate ?? dayjs().format("YYYY/MM/DD"),
+      toDate: event?.toDate ?? dayjs().format("YYYY/MM/DD"),
+      members: event?.members,
+      moneyUnit: event?.moneyUnit,
     },
     resolver: zodResolver(editEventSchema),
     mode: "onSubmit",
@@ -70,17 +71,17 @@ export default function EditEventPage() {
   };
 
   useEffect(() => {
-    if (eventInfo && paymentInfo) {
-      setValue("eventName", eventInfo.eventName);
-      setValue("memo", eventInfo.memo);
-      setValue("fromDate", eventInfo.fromDate);
-      setValue("toDate", eventInfo.toDate);
-      setValue("members", eventInfo.members);
-      setValue("moneyUnit", eventInfo.moneyUnit);
+    if (event && payments) {
+      setValue("eventName", event.eventName);
+      setValue("memo", event.memo);
+      setValue("fromDate", event.fromDate);
+      setValue("toDate", event.toDate);
+      setValue("members", event.members);
+      setValue("moneyUnit", event.moneyUnit);
     }
-  }, [eventInfo, paymentInfo, setValue]);
+  }, [event, payments, setValue]);
 
-  if (!router.isReady || !eventInfo || !paymentInfo) {
+  if (!router.isReady || !event || !payments) {
     return null;
   }
 
@@ -108,7 +109,7 @@ export default function EditEventPage() {
               type="button"
               className="btn w-1/2 no-animation"
               onClick={() => {
-                push(`/event/${eventInfo.eventId}`);
+                push(`/event/${event.eventId}`);
               }}
             >
               キャンセル
@@ -117,7 +118,7 @@ export default function EditEventPage() {
               type="submit"
               className="btn w-1/2 bg-primary hover:bg-primary-hover text-white no-animation"
               onClick={() => {
-                push(`/event/${eventInfo.eventId}`);
+                push(`/event/${event.eventId}`);
               }}
             >
               更新
@@ -128,3 +129,26 @@ export default function EditEventPage() {
     </div>
   );
 }
+
+export const getServerSideProps = async (context: any) => {
+  const { eventId, paymentId } = context.params;
+
+  const eventUrl = "http://localhost:3000/api/event";
+  const eventData = (await fetch(eventUrl).then((res) =>
+    res.json()
+  )) as EventType;
+
+  const paymentUrl = "http://localhost:3000/api/payment";
+  const paymentsData = (await fetch(paymentUrl).then((res) =>
+    res.json()
+  )) as PaymentType[];
+
+  try {
+    return {
+      props: {
+        event: eventData,
+        payments: paymentsData,
+      },
+    };
+  } catch (error) {}
+};
