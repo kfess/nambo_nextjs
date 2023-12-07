@@ -52,7 +52,7 @@ export const Receiver: React.FC<Props> = ({
       <div className="flex flex-row flex-wrap gap-x-2">
         {members.map((member) => {
           return (
-            <label className="label cursor-pointer space-x-1">
+            <label key={member.name} className="label cursor-pointer space-x-1">
               <input
                 type="checkbox"
                 {...register("otherNames")}

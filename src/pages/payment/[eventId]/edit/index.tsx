@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import type { InferGetServerSidePropsType } from "next";
 import { useForm, useWatch } from "react-hook-form";
@@ -29,9 +29,12 @@ export default function EditPaymentPage({
   const paymentId = router.query.paymentId as string;
 
   // 該当する支払い情報を取得
-  const payment =
-    payments?.find((payment) => payment.paymentId === paymentId) ??
-    ({} as PaymentType);
+  const payment = useMemo(() => {
+    return (
+      payments?.find((payment) => payment.paymentId === paymentId) ??
+      ({} as PaymentType)
+    );
+  }, [payments, paymentId]);
 
   const {
     control,
@@ -60,7 +63,7 @@ export default function EditPaymentPage({
       setValue("otherNames", payment.otherNames);
       setValue("cost", payment.cost);
     }
-  }, [event, payments, setValue]);
+  }, [event, payment, setValue]);
 
   if (!router.isReady) {
     return null;

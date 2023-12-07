@@ -1,10 +1,8 @@
-const path = require("path");
+import path from "path";
 
-module.exports = {
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // root ディレクトリに対する alias を設定
+export default {
+  webpack: (config) => {
     config.resolve.alias["@"] = path.resolve(__dirname, "src");
-
     return config;
   },
 };
