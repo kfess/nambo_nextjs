@@ -31,8 +31,8 @@ export default function PaymentNewPage({
     defaultValues: {
       eventId: eventId,
       purpose: "",
-      name: "",
-      otherNames: [],
+      payer: "",
+      payees: [],
       cost: 0,
     },
     resolver: zodResolver(createPaymentSchema),
@@ -41,10 +41,10 @@ export default function PaymentNewPage({
     criteriaMode: "all",
   });
 
-  const payer = useWatch({
-    control,
-    name: "name",
-  });
+  // const payer = useWatch({
+  //   control,
+  //   payer: "payer",
+  // });
 
   if (!router.isReady || !event) {
     return null;
@@ -95,15 +95,14 @@ export default function PaymentNewPage({
 
 export const getServerSideProps = async (context: any) => {
   const { eventId } = context.params;
-
-  const eventUrl = "http://localhost:3000/api/event";
-  const eventData = await fetch(eventUrl).then((res) => res.json());
+  const eventUrl = `http://localhost:3000/api/event?eventId=${eventId}`;
+  const eventData = (await fetch(eventUrl).then((res) =>
+    res.json()
+  )) as EventType;
 
   try {
-    return {
-      props: {
-        event: eventData,
-      },
-    };
-  } catch (error) {}
+    return { props: { event: eventData } };
+  } catch (error) {
+    return { props: { event: null } };
+  }
 };

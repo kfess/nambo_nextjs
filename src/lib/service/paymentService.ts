@@ -1,10 +1,11 @@
 import { Payment as PrismaPayment } from "@prisma/client";
 import { IPaymentRepository } from "@/lib/repository/paymentRepository";
 import { Payment } from "@/lib/domain/payment";
+import { CreatePaymentType } from "@/lib/domain/paymentSchema";
 
 export interface IPaymentService {
-  createPayment: (paymentData: Payment) => Promise<PrismaPayment>;
-  getPayment: (paymentId: string) => Promise<PrismaPayment>;
+  createPayment: (paymentData: CreatePaymentType) => Promise<PrismaPayment>;
+  getPayment: (paymentId: string) => Promise<PrismaPayment | null>;
   getPayments: (eventId: string) => Promise<PrismaPayment[]>;
   updatePayment: (
     paymentId: string,
@@ -16,11 +17,19 @@ export interface IPaymentService {
 export class PaymentService implements IPaymentService {
   constructor(private paymentRepository: IPaymentRepository) {}
 
-  async createPayment(paymentData: Payment): Promise<PrismaPayment> {
-    return await this.paymentRepository.createPayment(paymentData);
+  async createPayment(paymentData: CreatePaymentType): Promise<PrismaPayment> {
+    try {
+      return await this.paymentRepository.createPayment({
+        paymentId: "",
+        ...paymentData,
+      });
+    } catch (error: unknown) {
+      console.log(error);
+      throw new Error("");
+    }
   }
 
-  async getPayment(paymentId: string): Promise<PrismaPayment> {
+  async getPayment(paymentId: string): Promise<PrismaPayment | null> {
     return await this.paymentRepository.getPayment(paymentId);
   }
 

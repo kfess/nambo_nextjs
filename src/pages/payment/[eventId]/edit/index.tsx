@@ -22,8 +22,6 @@ export default function EditPaymentPage({
   event: EventType;
   payments: PaymentType[];
 }) {
-  console.log(event, payments);
-
   const router = useRouter();
   const eventId = router.query.eventId as string;
   const paymentId = router.query.paymentId as string;
@@ -46,8 +44,8 @@ export default function EditPaymentPage({
     defaultValues: {
       eventId: eventId,
       purpose: payment.purpose || "",
-      name: payment.name || "",
-      otherNames: payment.otherNames || [],
+      payer: payment.payer || "",
+      payees: payment.payees || [],
       cost: payment.cost || 0,
     },
     resolver: zodResolver(createPaymentSchema),
@@ -59,8 +57,8 @@ export default function EditPaymentPage({
   useEffect(() => {
     if (payment) {
       setValue("purpose", payment.purpose);
-      setValue("name", payment.name);
-      setValue("otherNames", payment.otherNames);
+      setValue("payer", payment.payer);
+      setValue("payees", payment.payees);
       setValue("cost", payment.cost);
     }
   }, [event, payment, setValue]);
@@ -115,7 +113,7 @@ export default function EditPaymentPage({
 export const getServerSideProps = async (context: any) => {
   const { eventId, paymentId } = context.params;
 
-  const eventUrl = "http://localhost:3000/api/event";
+  const eventUrl = `http://localhost:3000/api/event?eventId=${eventId}`;
   const eventData = (await fetch(eventUrl).then((res) =>
     res.json()
   )) as EventType;
@@ -126,11 +124,8 @@ export const getServerSideProps = async (context: any) => {
   )) as PaymentType[];
 
   try {
-    return {
-      props: {
-        event: eventData,
-        payments: paymentsData,
-      },
-    };
-  } catch (error) {}
+    return { props: { event: eventData, payments: paymentsData } };
+  } catch (error) {
+    return { props: { event: null, payments: null } };
+  }
 };

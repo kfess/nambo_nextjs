@@ -29,8 +29,8 @@ export default function EditEventPage({
 
   const unEditableMembers = Array.from(
     (payments ?? []).reduce((set, payment) => {
-      set.add(payment.name);
-      payment.otherNames.forEach((name) => set.add(name));
+      set.add(payment.payer);
+      payment.payees.forEach((payee) => set.add(payee));
       return set;
     }, new Set<string>())
   );
@@ -67,7 +67,7 @@ export default function EditEventPage({
     //   navigate(`/event/${data.eventId}`, { replace: true });
     // }, 2 * 1000);
     console.log(data);
-    push("/event/1");
+    push(`/event/${eventId}`);
   };
 
   useEffect(() => {
@@ -145,10 +145,9 @@ export const getServerSideProps = async (context: any) => {
 
   try {
     return {
-      props: {
-        event: eventData,
-        payments: paymentsData,
-      },
+      props: { event: eventData, payments: paymentsData },
     };
-  } catch (error) {}
+  } catch (error) {
+    return { props: { event: null, payments: null } };
+  }
 };

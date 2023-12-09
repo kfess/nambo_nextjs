@@ -19,13 +19,13 @@ export const Receiver: React.FC<Props> = ({
 }) => {
   const onSelectAll = () => {
     setValue(
-      "otherNames",
+      "payees",
       members.map((member) => member.name)
     );
   };
 
   const onUnselectAll = () => {
-    setValue("otherNames", []);
+    setValue("payees", []);
   };
 
   return (
@@ -55,7 +55,7 @@ export const Receiver: React.FC<Props> = ({
             <label key={member.name} className="label cursor-pointer space-x-1">
               <input
                 type="checkbox"
-                {...register("otherNames")}
+                {...register("payees")}
                 value={member.name}
                 className="checkbox checkbox-primary checkbox-sm rounded no-animation"
               />
@@ -65,9 +65,7 @@ export const Receiver: React.FC<Props> = ({
           );
         })}
       </div>
-      {errors.otherNames && (
-        <ErrorMessage message={errors.otherNames.message} />
-      )}
+      {errors.payees && <ErrorMessage message={errors.payees.message} />}
     </div>
   );
 };

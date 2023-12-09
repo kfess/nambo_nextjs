@@ -16,3 +16,12 @@ export const validate = async <T>(
     throw new Error("Unexpected error occurred.");
   }
 };
+
+// uuid の形式の検証
+// このアプリ内では、特に eventId, paymentId の形式の検証に使用
+export const isValidUUID = (uuid: string): boolean => {
+  const uuidRegex = new RegExp(
+    "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[89aAbB][0-9a-f]{3}-[0-9a-f]{12}$"
+  );
+  return uuidRegex.test(uuid);
+};

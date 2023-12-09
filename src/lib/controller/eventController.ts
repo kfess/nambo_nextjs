@@ -17,10 +17,18 @@ export class EventController {
   }
 
   async getEvent(eventId: string) {
-    return await this.eventService.getEvent(eventId);
+    try {
+      return await this.eventService.getEvent(eventId);
+    } catch (error: unknown) {
+      console.log(error);
+    }
   }
 
   async updateEvent(eventId: string, eventData: Event) {
-    return await this.eventService.updateEvent(eventId, eventData);
+    try {
+      // eventData の入力値の検証
+      // 支払いに関与しているユーザーは、削除できないことを検証
+      return await this.eventService.updateEvent(eventId, eventData);
+    } catch (error: unknown) {}
   }
 }

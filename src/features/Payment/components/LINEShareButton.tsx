@@ -1,9 +1,9 @@
 import React from "react";
 import { LineIcon, LineShareButton } from "react-share";
 
-interface Props {
-  url: string;
-}
+type Props = {
+  readonly url: string;
+};
 
 export const LINEShareButton: React.FC<Props> = ({ url }) => {
   return (

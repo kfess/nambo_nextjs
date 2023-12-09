@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { EventRepository, prisma } from "@/lib/repository";
 import { EventService } from "@/lib/service";
 import { EventController } from "@/lib/controller/eventController";
+import { isValidUUID } from "@/lib/utils/validate";
 
 const eventRepository = new EventRepository(prisma);
 const eventService = new EventService(eventRepository);
@@ -12,14 +13,20 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
+    // イベントデータの取得ハンドラー
     try {
       const eventId = req.query.eventId;
+      if (typeof eventId !== "string" || !isValidUUID(eventId)) {
+        res.status(400).json({ error: "Invalid eventId is specified" });
+      }
+
       const eventData = await eventController.getEvent(eventId as string);
       res.status(200).json(eventData);
     } catch (error: unknown) {
       res.status(500).json({ error: "Unknown error" });
     }
   } else if (req.method === "POST") {
+    // イベントデータの作成ハンドラー
     try {
       const createdEventData = await eventController.createEvent(req.body);
       res.status(200).json(createdEventData);
@@ -27,5 +34,6 @@ export default async function handler(
       res.status(500).json({ error: "Unknown error" });
     }
   } else if (req.method === "PUT") {
+    // イベントデータの更新ハンドラー
   }
 }

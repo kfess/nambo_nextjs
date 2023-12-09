@@ -18,7 +18,7 @@ export const PayerName: React.FC<Props> = ({
   return (
     <div className="mb-4">
       <Controller
-        name="name"
+        name="payer"
         control={control}
         render={({ field }) => (
           <div className="flex flex-col mt-3">
@@ -37,7 +37,7 @@ export const PayerName: React.FC<Props> = ({
                 </option>
               ))}
             </select>
-            {errors.name && <ErrorMessage message={errors.name.message} />}
+            {errors.payer && <ErrorMessage message={errors.payer.message} />}
           </div>
         )}
       />

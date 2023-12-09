@@ -99,11 +99,8 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
   )) as PaymentType[];
 
   try {
-    return {
-      props: {
-        event: eventData,
-        payments: paymentsData,
-      },
-    };
-  } catch (error) {}
+    return { props: { event: eventData, payments: paymentsData } };
+  } catch (error) {
+    return { props: { event: null, payments: null } };
+  }
 };
