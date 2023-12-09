@@ -15,7 +15,6 @@ export class EventService implements IEventService {
   async createEvent(eventData: CreateEventType): Promise<PrismaEvent> {
     try {
       return await this.eventRepository.createEvent({
-        eventId: "",
         memo: eventData.memo ?? "",
         ...eventData,
       });

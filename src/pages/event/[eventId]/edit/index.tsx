@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
+import dayjs from "dayjs";
 import { useRouter } from "next/router";
-import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
+import type { InferGetServerSidePropsType } from "next";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TermsLink } from "@/features/Terms/components/TermsLink";
 import { Header } from "@/features/Event/components/Header";
 import {
   EventType,
+  EditEventType,
   generateEditEventSchema,
 } from "@/features/Event/eventSchema";
 import { EventName } from "@/features/Event/components/EventName";
@@ -15,7 +17,6 @@ import { StartEndDatePicker } from "@/features/Event/components/DatePicker";
 import { MoneyUnit } from "@/features/Event/components/MoneyUnit";
 import { PaymentType } from "@/features/Payment/paymentFormSchema";
 import { MemberInEditMode } from "@/features/Event/components/MemberInEditMode";
-import dayjs from "dayjs";
 
 export default function EditEventPage({
   event,
@@ -25,7 +26,7 @@ export default function EditEventPage({
   payments: PaymentType[];
 }) {
   const router = useRouter();
-  const { eventId } = router.query;
+  const eventId = event.eventId;
 
   const unEditableMembers = Array.from(
     (payments ?? []).reduce((set, payment) => {
@@ -42,14 +43,15 @@ export default function EditEventPage({
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
-  } = useForm<EventType>({
+  } = useForm<EditEventType>({
     defaultValues: {
-      eventName: event?.eventName,
-      memo: event?.memo,
-      fromDate: event?.fromDate ?? dayjs().format("YYYY/MM/DD"),
-      toDate: event?.toDate ?? dayjs().format("YYYY/MM/DD"),
-      members: event?.members,
-      moneyUnit: event?.moneyUnit,
+      eventId: event.eventId,
+      eventName: event.eventName,
+      memo: event.memo,
+      fromDate: event.fromDate ?? dayjs().format("YYYY-MM-DD"),
+      toDate: event.toDate ?? dayjs().format("YYYY-MM-DD"),
+      members: event.members,
+      moneyUnit: event.moneyUnit,
     },
     resolver: zodResolver(editEventSchema),
     mode: "onSubmit",
@@ -59,13 +61,6 @@ export default function EditEventPage({
   const { push } = useRouter();
 
   const onSubmit: SubmitHandler<EventType> = async (data: EventType) => {
-    // await postEventData(
-    //   `${process.env.REACT_APP_DB_EVENT_BASE_URL}/create/`,
-    //   data
-    // );
-    // setTimeout(() => {
-    //   navigate(`/event/${data.eventId}`, { replace: true });
-    // }, 2 * 1000);
     console.log(data);
     push(`/event/${eventId}`);
   };
@@ -138,15 +133,13 @@ export const getServerSideProps = async (context: any) => {
     res.json()
   )) as EventType;
 
-  const paymentUrl = "http://localhost:3000/api/payment";
+  const paymentUrl = `http://localhost:3000/api/payment?paymentId=${paymentId}`;
   const paymentsData = (await fetch(paymentUrl).then((res) =>
     res.json()
   )) as PaymentType[];
 
   try {
-    return {
-      props: { event: eventData, payments: paymentsData },
-    };
+    return { props: { event: eventData, payments: paymentsData } };
   } catch (error) {
     return { props: { event: null, payments: null } };
   }

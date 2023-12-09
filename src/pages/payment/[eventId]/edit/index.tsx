@@ -7,8 +7,8 @@ import { EventType } from "@/features/Event/eventSchema";
 import { PaymentType } from "@/features/Payment/paymentFormSchema";
 import { Header } from "@/features/Payment/components/Header";
 import {
-  CreatePaymentType,
-  createPaymentSchema,
+  UpdatePaymentType,
+  updatePaymentSchema,
 } from "@/features/Payment/paymentFormSchema";
 import { Purpose } from "@/features/Payment/components/Form/Purpose";
 import { PayerName } from "@/features/Payment/components/Form/PayerName";
@@ -17,22 +17,13 @@ import { Money } from "@/features/Payment/components/Form/Money";
 
 export default function EditPaymentPage({
   event,
-  payments,
+  payment,
 }: InferGetServerSidePropsType<typeof getServerSideProps> & {
   event: EventType;
-  payments: PaymentType[];
+  payment: PaymentType;
 }) {
-  const router = useRouter();
-  const eventId = router.query.eventId as string;
-  const paymentId = router.query.paymentId as string;
-
-  // 該当する支払い情報を取得
-  const payment = useMemo(() => {
-    return (
-      payments?.find((payment) => payment.paymentId === paymentId) ??
-      ({} as PaymentType)
-    );
-  }, [payments, paymentId]);
+  const eventId = event.eventId;
+  const paymentId = payment.paymentId;
 
   const {
     control,
@@ -40,7 +31,7 @@ export default function EditPaymentPage({
     register,
     formState: { errors, isSubmitting },
     setValue,
-  } = useForm<CreatePaymentType>({
+  } = useForm<UpdatePaymentType>({
     defaultValues: {
       eventId: eventId,
       purpose: payment.purpose || "",
@@ -48,7 +39,7 @@ export default function EditPaymentPage({
       payees: payment.payees || [],
       cost: payment.cost || 0,
     },
-    resolver: zodResolver(createPaymentSchema),
+    resolver: zodResolver(updatePaymentSchema),
     mode: "onBlur",
     reValidateMode: "onBlur",
     criteriaMode: "all",
@@ -62,10 +53,6 @@ export default function EditPaymentPage({
       setValue("cost", payment.cost);
     }
   }, [event, payment, setValue]);
-
-  if (!router.isReady) {
-    return null;
-  }
 
   return (
     <div>
@@ -119,13 +106,13 @@ export const getServerSideProps = async (context: any) => {
   )) as EventType;
 
   const paymentUrl = "http://localhost:3000/api/payment";
-  const paymentsData = (await fetch(paymentUrl).then((res) =>
+  const paymentData = (await fetch(paymentUrl).then((res) =>
     res.json()
-  )) as PaymentType[];
+  )) as PaymentType;
 
   try {
-    return { props: { event: eventData, payments: paymentsData } };
+    return { props: { event: eventData, payment: paymentData } };
   } catch (error) {
-    return { props: { event: null, payments: null } };
+    return { props: { event: null, payment: null } };
   }
 };

@@ -7,6 +7,7 @@ dayjs.extend(isSameOrAfter);
 // event 作成用のスキーマ
 export const createEventSchema = z
   .object({
+    eventId: z.string().length(0), // 作成時は eventId は空文字列
     eventName: z
       .string()
       .min(1, "入力必須項目です。")

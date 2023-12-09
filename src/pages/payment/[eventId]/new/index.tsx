@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EventType } from "@/features/Event/eventSchema";
 import { Header } from "@/features/Payment/components/Header";
@@ -19,7 +19,7 @@ export default function PaymentNewPage({
   event: EventType;
 }) {
   const router = useRouter();
-  const eventId = router.query.eventId as string;
+  const eventId = event.eventId;
 
   const {
     control,
@@ -40,11 +40,6 @@ export default function PaymentNewPage({
     reValidateMode: "onBlur",
     criteriaMode: "all",
   });
-
-  // const payer = useWatch({
-  //   control,
-  //   payer: "payer",
-  // });
 
   if (!router.isReady || !event) {
     return null;

@@ -19,3 +19,7 @@ export const paymentSchema = createPaymentSchema.extend({
 });
 
 export type PaymentType = z.infer<typeof paymentSchema>;
+
+// PaymentType と同じ
+export const updatePaymentSchema = paymentSchema;
+export type UpdatePaymentType = z.infer<typeof updatePaymentSchema>;
