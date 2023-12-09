@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import { EventType } from "@/features/Event/eventSchema";
@@ -90,7 +90,7 @@ export default function EventPage({
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const eventUrl = "http://localhost:3000/api/event";
+  const eventUrl = `http://localhost:3000/api/event?eventId=${context.params?.eventId}`;
   const eventData = (await fetch(eventUrl).then((r) => r.json())) as EventType;
 
   const paymentUrl = "http://localhost:3000/api/payment";

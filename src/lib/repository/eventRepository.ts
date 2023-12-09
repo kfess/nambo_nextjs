@@ -28,7 +28,10 @@ export class EventRepository implements IEventRepository {
   }
 
   async getEvent(eventId: string): Promise<PrismaEvent | null> {
-    return await this.prisma.event.findUnique({ where: { eventId } });
+    return await this.prisma.event.findUnique({
+      where: { eventId },
+      include: { members: true },
+    });
   }
 
   async updateEvent(eventId: string, eventData: Event): Promise<PrismaEvent> {
@@ -36,9 +39,7 @@ export class EventRepository implements IEventRepository {
       where: { eventId },
       data: {
         ...eventData,
-        members: {
-          create: eventData.members,
-        },
+        members: { create: eventData.members },
       },
     });
   }

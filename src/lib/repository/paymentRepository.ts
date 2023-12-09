@@ -32,11 +32,17 @@ export class PaymentRepository implements IPaymentRepository {
   }
 
   async getPayment(paymentId: string): Promise<PrismaPayment | null> {
-    return await this.prisma.payment.findUnique({ where: { paymentId } });
+    return await this.prisma.payment.findUnique({
+      where: { paymentId },
+      include: { payees: true },
+    });
   }
 
   async getPayments(eventId: string): Promise<PrismaPayment[]> {
-    return await this.prisma.payment.findMany({ where: { eventId } });
+    return await this.prisma.payment.findMany({
+      where: { eventId },
+      include: { payees: true },
+    });
   }
 
   async updatePayment(
