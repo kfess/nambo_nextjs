@@ -1,11 +1,6 @@
-type Member = {
-  readonly name: string;
-  readonly ratio: number;
-};
+import { EventType, Member, MoneyUnit } from "@/lib/domain/eventSchema";
 
-type MoneyUnit = "1" | "10" | "100" | "1000";
-
-export class Event {
+export class Event implements EventType {
   readonly eventId: string;
   readonly eventName: string;
   readonly memo: string;
@@ -14,21 +9,13 @@ export class Event {
   readonly members: Member[];
   readonly moneyUnit: MoneyUnit;
 
-  constructor(
-    eventId: string,
-    eventName: string,
-    memo: string,
-    fromDate: string,
-    toDate: string,
-    members: Member[],
-    moneyUnit: MoneyUnit
-  ) {
-    this.eventId = eventId;
-    this.eventName = eventName;
-    this.memo = memo;
-    this.fromDate = fromDate;
-    this.toDate = toDate;
-    this.members = members;
-    this.moneyUnit = moneyUnit;
+  constructor(eventData: EventType) {
+    this.eventId = eventData.eventId;
+    this.eventName = eventData.eventName;
+    this.memo = eventData.memo ?? "";
+    this.fromDate = eventData.fromDate;
+    this.toDate = eventData.toDate;
+    this.members = eventData.members;
+    this.moneyUnit = eventData.moneyUnit ?? "10";
   }
 }

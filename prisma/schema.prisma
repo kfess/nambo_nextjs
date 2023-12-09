@@ -8,40 +8,37 @@ datasource db {
 }
 
 model Event {
-  id        Int       @id @default(autoincrement())
-  eventId   String    @db.Uuid
+  eventId   String    @id @default(uuid())
   eventName String
   memo      String
   fromDate  DateTime
   toDate    DateTime
   moneyUnit String
   members   Member[]
-  Payment   Payment[]
+  payments  Payment[]
 }
 
 model Member {
   id      Int    @id @default(autoincrement())
   name    String
   ratio   Int
-  eventId Int
-  event   Event  @relation(fields: [eventId], references: [id])
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [eventId])
 }
 
 model Payment {
-  id         Int      @id @default(autoincrement())
-  paymentId  String   @db.Uuid
-  eventId    Int
-  event      Event    @relation(fields: [eventId], references: [id])
-  purpose    String
-  payer       String
-  Payees     Payee[]
-  cost       Int
+  paymentId String    @id @default(uuid())
+  eventId   String
+  purpose   String
+  payer     String
+  payees    Payee[]
+  cost      Int
+  event     Event     @relation(fields: [eventId], references: [eventId])
 }
 
 model Payee {
-  id        Int     @id @default(autoincrement())
-  paymentId Int     // Paymentテーブルとのリレーション
-  payment   Payment @relation(fields: [paymentId], references: [id])
-  name      String  // 支払いに関連する人の名前
+  id        Int      @id @default(autoincrement())
+  name      String
+  paymentId String
+  payment   Payment  @relation(fields: [paymentId], references: [paymentId])
 }
-

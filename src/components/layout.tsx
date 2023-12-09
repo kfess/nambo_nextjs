@@ -1,4 +1,4 @@
-import Link from "next/link";
+// import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 import { MdOutlineCopyright } from "react-icons/md";
@@ -8,7 +8,7 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
     <>
       <div className="navbar bg-base-100">
         <div className="flex-1">
-          <Link href="/" className="btn btn-ghost normal-case text-xl">
+          <a href="/" className="btn btn-ghost normal-case text-xl">
             <Image
               src="/nambo_logo.png"
               alt="nambo logo"
@@ -16,7 +16,7 @@ const Layout: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
               height="25.91"
             />
             nambo.
-          </Link>
+          </a>
         </div>
       </div>
       <main className="min-h-screen">{children}</main>

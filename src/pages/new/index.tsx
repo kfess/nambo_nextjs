@@ -1,5 +1,4 @@
 import React from "react";
-import { useRouter } from "next/router";
 import dayjs from "dayjs";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,20 +25,18 @@ export default function NewEventPage() {
     defaultValues: {
       eventName: "",
       memo: "",
-      fromDate: dayjs().format("YYYY/MM/DD"),
-      toDate: dayjs().format("YYYY/MM/DD"),
+      fromDate: dayjs().format("YYYY-MM-DD"),
+      toDate: dayjs().format("YYYY-MM-DD"),
       members: [
         { name: "", ratio: 1 },
         { name: "", ratio: 1 },
       ],
-      moneyUnit: "100",
+      moneyUnit: "10",
     },
     resolver: zodResolver(createEventSchema),
     mode: "onSubmit",
     criteriaMode: "all",
   });
-
-  const router = useRouter();
 
   const { mutate, isLoading, error } = useAddEvent();
 
