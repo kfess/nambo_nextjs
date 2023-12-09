@@ -89,7 +89,7 @@ export default function EventPage({
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context: any) => {
   const eventUrl = `http://localhost:3000/api/event?eventId=${context.params?.eventId}`;
   const eventData = (await fetch(eventUrl).then((r) => r.json())) as EventType;
 

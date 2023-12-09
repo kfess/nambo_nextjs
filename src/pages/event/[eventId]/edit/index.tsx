@@ -133,7 +133,7 @@ export default function EditEventPage({
 export const getServerSideProps = async (context: any) => {
   const { eventId, paymentId } = context.params;
 
-  const eventUrl = "http://localhost:3000/api/event";
+  const eventUrl = `http://localhost:3000/api/event?eventId=${eventId}`;
   const eventData = (await fetch(eventUrl).then((res) =>
     res.json()
   )) as EventType;
