@@ -19,6 +19,7 @@ export class PaymentController {
       return await this.paymentService.createPayment(validatedPaymentData);
     } catch (error: unknown) {
       console.log(error);
+      throw new Error("");
     }
   }
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import type { InferGetServerSidePropsType } from "next";
 import { useForm, useWatch } from "react-hook-form";
@@ -22,6 +22,7 @@ export default function EditPaymentPage({
   event: EventType;
   payment: PaymentType;
 }) {
+  const router = useRouter();
   const eventId = event.eventId;
   const paymentId = payment.paymentId;
 

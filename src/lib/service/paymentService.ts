@@ -20,7 +20,6 @@ export class PaymentService implements IPaymentService {
   async createPayment(paymentData: CreatePaymentType): Promise<PrismaPayment> {
     try {
       return await this.paymentRepository.createPayment({
-        paymentId: "",
         ...paymentData,
       });
     } catch (error: unknown) {
