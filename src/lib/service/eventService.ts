@@ -1,18 +1,18 @@
-import { Event as PrismaEvent } from "@prisma/client";
 import { IEventRepository } from "@/lib/repository/eventRepository";
 import { Event } from "@/lib/domain/event";
 import { CreateEventType } from "@/lib/domain/eventSchema";
+import { EventType } from "@/lib/domain/eventSchema";
 
 export interface IEventService {
-  createEvent: (eventData: CreateEventType) => Promise<PrismaEvent>;
-  getEvent: (eventId: string) => Promise<PrismaEvent | null>;
-  updateEvent: (eventId: string, eventData: Event) => Promise<PrismaEvent>;
+  createEvent: (eventData: CreateEventType) => Promise<EventType>;
+  getEvent: (eventId: string) => Promise<EventType | null>;
+  updateEvent: (eventId: string, eventData: Event) => Promise<EventType>;
 }
 
 export class EventService implements IEventService {
   constructor(private eventRepository: IEventRepository) {}
 
-  async createEvent(eventData: CreateEventType): Promise<PrismaEvent> {
+  async createEvent(eventData: CreateEventType): Promise<EventType> {
     try {
       return await this.eventRepository.createEvent({
         memo: eventData.memo ?? "",
@@ -23,7 +23,7 @@ export class EventService implements IEventService {
     }
   }
 
-  async getEvent(eventId: string): Promise<PrismaEvent | null> {
+  async getEvent(eventId: string): Promise<EventType | null> {
     try {
       return await this.eventRepository.getEvent(eventId);
     } catch (error: unknown) {
@@ -31,7 +31,7 @@ export class EventService implements IEventService {
     }
   }
 
-  async updateEvent(eventId: string, eventData: Event): Promise<PrismaEvent> {
+  async updateEvent(eventId: string, eventData: Event): Promise<EventType> {
     try {
       return await this.eventRepository.updateEvent(eventId, eventData);
     } catch (error: unknown) {
