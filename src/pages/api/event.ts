@@ -21,6 +21,7 @@ export default async function handler(
       }
 
       const eventData = await eventController.getEvent(eventId as string);
+
       res.status(200).json(eventData);
     } catch (error: unknown) {
       res.status(500).json({ error: "Unknown error" });

@@ -23,6 +23,7 @@ export default function NewEventPage() {
     formState: { errors, isSubmitting },
   } = useForm<CreateEventType>({
     defaultValues: {
+      eventId: "",
       eventName: "",
       memo: "",
       fromDate: dayjs().format("YYYY-MM-DD"),
