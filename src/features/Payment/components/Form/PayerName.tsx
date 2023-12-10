@@ -1,5 +1,10 @@
 import React from "react";
-import { Control, Controller, FieldErrors } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  UseFormSetValue,
+} from "react-hook-form";
 import { CreatePaymentType } from "@/features/Payment/paymentFormSchema";
 import { ErrorMessage } from "@/components/shared/ErrorMessage";
 import { EventType } from "@/features/Event/eventSchema";
@@ -7,18 +12,20 @@ import { EventType } from "@/features/Event/eventSchema";
 type Props = {
   control: Control<CreatePaymentType>;
   errors: FieldErrors<CreatePaymentType>;
+  setValue: UseFormSetValue<CreatePaymentType>;
   payerCandidates: Pick<EventType, "members">["members"];
 };
 
 export const PayerName: React.FC<Props> = ({
   control,
   errors,
+  setValue,
   payerCandidates,
 }) => {
   return (
     <div className="mb-4">
       <Controller
-        name="payer"
+        name="payer.name"
         control={control}
         render={({ field }) => (
           <div className="flex flex-col mt-3">
@@ -30,6 +37,16 @@ export const PayerName: React.FC<Props> = ({
               id="name"
               aria-label="支払った人"
               className="select select-bordered select-md text-base w-full"
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                const selectedName = e.target.value;
+                const selectedMember = payerCandidates.find(
+                  (m) => m.name === selectedName
+                );
+                if (selectedMember) {
+                  setValue("payer.id", selectedMember.memberId);
+                }
+                field.onChange(e);
+              }}
             >
               <option value="">--</option>
               {payerCandidates.map((member, idx) => (

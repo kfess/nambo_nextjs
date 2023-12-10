@@ -4,8 +4,16 @@ export const createPaymentSchema = z.object({
   eventId: z.string().min(1, "入力必須事項です。"),
   paymentId: z.string().length(0), // DB で自動生成されるので、ここでは指定しない
   purpose: z.string().trim().min(1, "入力必須事項です。"),
-  payer: z.string().trim().min(1, "入力必須事項です。"),
-  payees: z.array(z.string()).min(1, "少なくとも誰か一人を指定してください。"),
+  payer: z.object({
+    id: z.string(),
+    name: z.string().min(1, "入力必須事項です。"),
+  }),
+  payees: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string().min(1, "入力必須事項です。"),
+    })
+  ),
   cost: z
     .number()
     .int("整数値を入力してください。")

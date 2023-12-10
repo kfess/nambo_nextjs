@@ -1,3 +1,4 @@
+import { ZodError } from "zod";
 import { IEventRepository } from "@/lib/repository/eventRepository";
 import { IPaymentRepository } from "@/lib/repository/paymentRepository";
 import {
@@ -51,15 +52,15 @@ export class EventService implements IEventService {
 
       // eventData の入力値の検証
       const validatedEventData = await validate(updateEventSchema, eventData);
-      console.log("validatedEventData", validatedEventData);
 
       return await this.eventRepository.updateEvent(eventId, {
         ...validatedEventData,
-        members: validatedEventData.members.map((member) => ({
-          ...member,
-        })),
       });
     } catch (error: unknown) {
+      if (error instanceof ZodError) {
+        console.log(error);
+        throw new Error("");
+      }
       throw new Error("");
     }
   }

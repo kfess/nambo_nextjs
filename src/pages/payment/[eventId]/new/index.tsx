@@ -28,12 +28,16 @@ export default function PaymentNewPage({
     register,
     formState: { errors, isSubmitting },
     setValue,
+    getValues,
   } = useForm<CreatePaymentType>({
     defaultValues: {
       eventId: eventId,
       paymentId: "", // DB で自動生成するため、空文字列
       purpose: "",
-      payer: "",
+      payer: {
+        id: "",
+        name: "",
+      },
       payees: [],
       cost: 0,
     },
@@ -47,6 +51,7 @@ export default function PaymentNewPage({
   const onSubmit: SubmitHandler<CreatePaymentType> = async (
     data: CreatePaymentType
   ) => {
+    console.log("here", data);
     mutate(data);
   };
 
@@ -66,10 +71,10 @@ export default function PaymentNewPage({
           <PayerName
             control={control}
             errors={errors}
+            setValue={setValue}
             payerCandidates={event.members ?? []}
           />
           <Receiver
-            register={register}
             errors={errors}
             setValue={setValue}
             members={event.members ?? []}
