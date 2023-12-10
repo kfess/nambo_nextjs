@@ -1,22 +1,32 @@
 import { IEventRepository } from "@/lib/repository/eventRepository";
-import { Event } from "@/lib/domain/event";
-import { CreateEventType } from "@/lib/domain/eventSchema";
-import { EventType } from "@/lib/domain/eventSchema";
+import { IPaymentRepository } from "@/lib/repository/paymentRepository";
+import {
+  createEventSchema,
+  CreateEventType,
+  generateEditEventSchema,
+  EventType,
+} from "@/lib/domain/eventSchema";
+import { validate } from "@/lib/utils/validate";
 
 export interface IEventService {
   createEvent: (eventData: CreateEventType) => Promise<EventType>;
   getEvent: (eventId: string) => Promise<EventType | null>;
-  updateEvent: (eventId: string, eventData: Event) => Promise<EventType>;
+  updateEvent: (eventId: string, eventData: EventType) => Promise<EventType>;
 }
 
 export class EventService implements IEventService {
-  constructor(private eventRepository: IEventRepository) {}
+  constructor(
+    private eventRepository: IEventRepository,
+    private paymentRepository: IPaymentRepository
+  ) {}
 
   async createEvent(eventData: CreateEventType): Promise<EventType> {
     try {
+      // eventData の入力値の検証
+      const validatedEventData = await validate(createEventSchema, eventData);
       return await this.eventRepository.createEvent({
-        memo: eventData.memo ?? "",
-        ...eventData,
+        memo: validatedEventData.memo ?? "",
+        ...validatedEventData,
       });
     } catch (error: unknown) {
       throw new Error("");
@@ -31,9 +41,21 @@ export class EventService implements IEventService {
     }
   }
 
-  async updateEvent(eventId: string, eventData: Event): Promise<EventType> {
+  async updateEvent(eventId: string, eventData: EventType): Promise<EventType> {
     try {
-      return await this.eventRepository.updateEvent(eventId, eventData);
+      // 支払いに関与しているユーザーは、削除できないことを検証
+      const involvedMembers =
+        await this.paymentRepository.getInvolvedMembers(eventId);
+      const updateEventSchema = generateEditEventSchema(involvedMembers);
+
+      // eventData の入力値の検証
+      const validatedEventData = await validate(updateEventSchema, eventData);
+      console.log("validatedEventData", validatedEventData);
+
+      return await this.eventRepository.updateEvent(
+        eventId,
+        validatedEventData
+      );
     } catch (error: unknown) {
       throw new Error("");
     }

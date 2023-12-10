@@ -11,6 +11,7 @@ export interface IPaymentRepository {
     paymentData: Payment
   ) => Promise<PaymentType>;
   deletePayment: (paymentId: string) => Promise<PaymentType>;
+  getInvolvedMembers: (eventId: string) => Promise<string[]>; // 支払いに関与しているメンバーの一覧を取得する
 }
 
 export class PaymentRepository implements IPaymentRepository {
@@ -82,6 +83,22 @@ export class PaymentRepository implements IPaymentRepository {
     });
 
     return this.toDomain(prismaPayment);
+  }
+
+  // 支払いに関与しているメンバーの一覧を取得する
+  async getInvolvedMembers(eventId: string): Promise<string[]> {
+    const prismaPayments = await this.prisma.payment.findMany({
+      where: { eventId },
+      include: { payees: true },
+    });
+
+    const members = new Set<string>();
+    prismaPayments.forEach((prismaPayment) => {
+      members.add(prismaPayment.payer);
+      prismaPayment.payees.forEach((payee) => members.add(payee.name));
+    });
+
+    return Array.from(members);
   }
 
   // Prisma の Payment を Domain の Payment に変換するためのメソッド

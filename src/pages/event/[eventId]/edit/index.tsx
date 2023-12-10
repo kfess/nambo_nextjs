@@ -17,6 +17,7 @@ import { StartEndDatePicker } from "@/features/Event/components/DatePicker";
 import { MoneyUnit } from "@/features/Event/components/MoneyUnit";
 import { PaymentType } from "@/features/Payment/paymentFormSchema";
 import { MemberInEditMode } from "@/features/Event/components/MemberInEditMode";
+import { useUpdateEvent } from "@/features/Event/hooks/useUpdateEvent";
 
 export default function EditEventPage({
   event,
@@ -26,10 +27,9 @@ export default function EditEventPage({
   payments: PaymentType[];
 }) {
   const router = useRouter();
-  const eventId = event.eventId;
 
   const unEditableMembers = Array.from(
-    (payments ?? []).reduce((set, payment) => {
+    payments.reduce((set, payment) => {
       set.add(payment.payer);
       payment.payees.forEach((payee) => set.add(payee));
       return set;
@@ -58,11 +58,12 @@ export default function EditEventPage({
     criteriaMode: "all",
   });
 
-  const { push } = useRouter();
+  const { mutate } = useUpdateEvent();
 
-  const onSubmit: SubmitHandler<EventType> = async (data: EventType) => {
-    console.log(data);
-    push(`/event/${eventId}`);
+  const onSubmit: SubmitHandler<EditEventType> = async (
+    data: EditEventType
+  ) => {
+    mutate(data);
   };
 
   useEffect(() => {
@@ -104,17 +105,15 @@ export default function EditEventPage({
               type="button"
               className="btn w-1/2 no-animation"
               onClick={() => {
-                push(`/event/${event.eventId}`);
+                router.push(`/event/${event.eventId}`);
               }}
             >
               キャンセル
             </button>
             <button
               type="submit"
+              disabled={isSubmitting}
               className="btn w-1/2 bg-primary hover:bg-primary-hover text-white no-animation"
-              onClick={() => {
-                push(`/event/${event.eventId}`);
-              }}
             >
               更新
             </button>
@@ -126,14 +125,14 @@ export default function EditEventPage({
 }
 
 export const getServerSideProps = async (context: any) => {
-  const { eventId, paymentId } = context.params;
+  const { eventId } = context.params;
 
   const eventUrl = `http://localhost:3000/api/event?eventId=${eventId}`;
   const eventData = (await fetch(eventUrl).then((res) =>
     res.json()
   )) as EventType;
 
-  const paymentUrl = `http://localhost:3000/api/payment?paymentId=${paymentId}`;
+  const paymentUrl = `http://localhost:3000/api/payment?eventId=${eventId}`;
   const paymentsData = (await fetch(paymentUrl).then((res) =>
     res.json()
   )) as PaymentType[];

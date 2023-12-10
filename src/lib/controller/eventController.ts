@@ -1,16 +1,12 @@
 import { IEventService } from "@/lib/service/eventService";
-import { Event } from "@/lib/domain/event";
-import { createEventSchema, CreateEventType } from "@/lib/domain/eventSchema";
-import { validate } from "@/lib/utils/validate";
+import { CreateEventType, EventType } from "@/lib/domain/eventSchema";
 
 export class EventController {
   constructor(private eventService: IEventService) {}
 
   async createEvent(eventData: CreateEventType) {
     try {
-      // eventData の入力値の検証
-      const validatedEventData = await validate(createEventSchema, eventData);
-      return await this.eventService.createEvent(validatedEventData);
+      return await this.eventService.createEvent(eventData);
     } catch (error: unknown) {
       console.log(error);
     }
@@ -24,12 +20,11 @@ export class EventController {
     }
   }
 
-  async updateEvent(eventId: string, eventData: Event) {
+  async updateEvent(eventId: string, eventData: EventType) {
     try {
-      // eventData の入力値の検証
-      const validatedEventData = await validate(createEventSchema, eventData);
-      // 支払いに関与しているユーザーは、削除できないことを検証
       return await this.eventService.updateEvent(eventId, eventData);
-    } catch (error: unknown) {}
+    } catch (error: unknown) {
+      console.log(error);
+    }
   }
 }

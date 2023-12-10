@@ -6,7 +6,7 @@ import { MoneyUnit, Member } from "@/lib/domain/eventSchema";
 export interface IEventRepository {
   createEvent: (eventData: Event) => Promise<EventType>;
   getEvent: (eventId: string) => Promise<EventType | null>;
-  updateEvent: (id: string, eventData: Event) => Promise<EventType>;
+  updateEvent: (id: string, eventData: EventType) => Promise<EventType>;
 }
 
 export class EventRepository implements IEventRepository {
@@ -42,7 +42,7 @@ export class EventRepository implements IEventRepository {
     return this.toDomain(prismaEvent);
   }
 
-  async updateEvent(eventId: string, eventData: Event): Promise<EventType> {
+  async updateEvent(eventId: string, eventData: EventType): Promise<EventType> {
     const prismaEvents = await this.prisma.event.update({
       where: { eventId },
       data: {
