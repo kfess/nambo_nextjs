@@ -23,7 +23,7 @@ export const WhoToWhom: React.FC<Props> = ({
   moneyUnit,
 }) => {
   const data = calcPayBackMoney(calcPaymentByTotalAction(payments, members));
-  const groupedData: Record<string, PayBackMoney[]> = data.reduce(
+  const groupedData = data.reduce(
     (acc, curr) => {
       if (!acc[curr.fromName]) {
         acc[curr.fromName] = [];
@@ -31,7 +31,7 @@ export const WhoToWhom: React.FC<Props> = ({
       acc[curr.fromName] = [...acc[curr.fromName], curr];
       return acc;
     },
-    {}
+    {} as Record<string, PayBackMoney[]>
   );
 
   return (

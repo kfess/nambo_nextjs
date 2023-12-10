@@ -48,12 +48,17 @@ export const calcPaymentByTotalAction = (
   const totalCost = data.reduce(
     (prev, cur) => {
       /** 支払い者 */
-      const myName = members.find((member) => member.name === cur.payer);
-
+      const myName = members.find((member) => member.name === cur.payer.name);
       /**支払われた側 */
-      const otherNames = members.filter((member) => member.name !== myName);
+      const otherNames = members.filter((member) =>
+        cur.payees.some((payee) => payee.name === member.name)
+      );
 
-      const costByAction = calcPaymentByAction(myName, otherNames, cur.cost);
+      const costByAction = calcPaymentByAction(
+        myName as Member,
+        otherNames,
+        cur.cost
+      );
 
       prev = uniqueNames.reduce(
         (acc, name) => {
@@ -149,7 +154,7 @@ export const calcExpenseByTotalAction = (
     (prev, cur) => {
       /**支払われた側 */
       const otherNames = members.filter((member) =>
-        cur.payees.includes(member.name)
+        cur.payees.some((payee) => payee.name === member.name)
       );
 
       const costByAction = calcExpenseByAction(

@@ -14,7 +14,7 @@ export const TotalExpense: React.FC<Props> = ({ payments, members }) => {
     (prev, cur) => {
       prev = uniqueNames.reduce(
         (acc, name) => {
-          const x = cur.payer === name ? cur.cost : 0;
+          const x = cur.payer.name === name ? cur.cost : 0;
           const y = prev[name] ?? 0;
           acc[name] = x + y;
           return acc;

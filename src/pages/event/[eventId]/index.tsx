@@ -19,6 +19,7 @@ export default function EventPage({
   const router = useRouter();
   const thisURL = `http://localhost:3000${router.asPath}`;
 
+  console.log(payments);
   const [selectedTab, setSelectedTab] = useState(1);
 
   return (
