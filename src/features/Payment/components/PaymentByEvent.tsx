@@ -1,8 +1,10 @@
 import React from "react";
 import { useRouter } from "next/router";
+import { SubmitHandler } from "react-hook-form";
 import { BiSolidUser } from "react-icons/bi";
 import { PaymentType } from "@/features/Payment/paymentFormSchema";
 import { getColorClass } from "@/helpers/color";
+import { useDeletePayment } from "@/features/Payment/hooks/useDeletePayment";
 
 type Props = {
   payment: PaymentType;
@@ -11,6 +13,12 @@ type Props = {
 export const PaymentByEvent: React.FC<Props> = ({ payment }) => {
   const router = useRouter();
   const { eventId } = router.query;
+
+  const { mutate } = useDeletePayment();
+
+  const onDeletePayment = async () => {
+    mutate(payment.paymentId);
+  };
 
   return (
     <div className="flex px-2 py-1 rounded">
@@ -28,7 +36,11 @@ export const PaymentByEvent: React.FC<Props> = ({ payment }) => {
             >
               編集
             </button>
-            <button className="btn btn-outline btn-error btn-sm rounded no-animation">
+            <button
+              type="button"
+              onClick={onDeletePayment}
+              className="btn btn-outline btn-error btn-sm rounded no-animation"
+            >
               削除
             </button>
           </div>

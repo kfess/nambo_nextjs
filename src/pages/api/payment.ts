@@ -39,7 +39,6 @@ export default async function handler(
   } else if (req.method === "POST") {
     // 支払いデータの作成ハンドラー
     try {
-      console.log(req.body);
       const createdPaymentData = await paymentController.createPayment(
         req.body
       );
@@ -51,6 +50,19 @@ export default async function handler(
   } else if (req.method === "PUT") {
     // body から eventId, paymentId を取得して、DB に支払い情報を更新する
   } else if (req.method === "DELETE") {
-    // body から eventId, paymentId を取得して、DB から支払い情報を削除する
+    const { paymentId } = req.query;
+    try {
+      if (typeof paymentId !== "string" || !isValidUUID(paymentId)) {
+        res.status(400).json({ error: "Invalid paymentId is specified" });
+      }
+
+      const deletedPaymentData = await paymentController.deletePayment(
+        paymentId as string
+      );
+      res.status(200).json(deletedPaymentData);
+    } catch (error: unknown) {
+      console.log("here", error);
+      res.status(500).json({ error: "Unknown error" });
+    }
   }
 }

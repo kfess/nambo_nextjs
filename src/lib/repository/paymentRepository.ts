@@ -88,12 +88,21 @@ export class PaymentRepository implements IPaymentRepository {
   }
 
   async deletePayment(paymentId: string): Promise<PaymentType> {
-    const prismaPayment = await this.prisma.payment.delete({
-      where: { paymentId },
-      include: { payees: true },
+    const deletedPayment = await this.prisma.$transaction(async (prisma) => {
+      // 支払われる人（payee）の削除
+      await prisma.payee.deleteMany({ where: { paymentId } });
+      // 支払い情報の削除
+      const deletedPayment = await prisma.payment.delete({
+        where: { paymentId },
+        include: {
+          payer: true,
+          payees: { include: { member: true } },
+        },
+      });
+      return deletedPayment;
     });
 
-    return this.toDomain(prismaPayment);
+    return this.toDomain(deletedPayment);
   }
 
   // 支払いに関与しているメンバーの一覧を取得する
