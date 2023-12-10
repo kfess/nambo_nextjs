@@ -94,13 +94,14 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
   const eventUrl = `http://localhost:3000/api/event?eventId=${eventId}`;
   const eventData = (await fetch(eventUrl).then((r) => r.json())) as EventType;
 
-  const paymentUrl = `http://localhost:3000/api/payment?eventId=${eventId}`;
-  const paymentsData = (await fetch(paymentUrl).then((r) =>
-    r.json()
-  )) as PaymentType[];
+  // const paymentUrl = `http://localhost:3000/api/payment?eventId=${eventId}`;
+  // const paymentsData = (await fetch(paymentUrl).then((r) =>
+  //   r.json()
+  // )) as PaymentType[];
 
   try {
-    return { props: { event: eventData, payments: paymentsData } };
+    // return { props: { event: eventData, payments: paymentsData } };
+    return { props: { event: eventData, payments: [] } };
   } catch (error) {
     return { props: { event: null, payments: null } };
   }

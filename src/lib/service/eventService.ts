@@ -25,10 +25,11 @@ export class EventService implements IEventService {
       // eventData の入力値の検証
       const validatedEventData = await validate(createEventSchema, eventData);
       return await this.eventRepository.createEvent({
-        memo: validatedEventData.memo ?? "",
         ...validatedEventData,
+        memo: validatedEventData.memo ?? "",
       });
     } catch (error: unknown) {
+      console.log("error!", error);
       throw new Error("");
     }
   }
@@ -52,10 +53,12 @@ export class EventService implements IEventService {
       const validatedEventData = await validate(updateEventSchema, eventData);
       console.log("validatedEventData", validatedEventData);
 
-      return await this.eventRepository.updateEvent(
-        eventId,
-        validatedEventData
-      );
+      return await this.eventRepository.updateEvent(eventId, {
+        ...validatedEventData,
+        members: validatedEventData.members.map((member) => ({
+          ...member,
+        })),
+      });
     } catch (error: unknown) {
       throw new Error("");
     }

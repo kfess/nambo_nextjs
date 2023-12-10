@@ -43,16 +43,69 @@ export class EventRepository implements IEventRepository {
   }
 
   async updateEvent(eventId: string, eventData: EventType): Promise<EventType> {
-    const prismaEvents = await this.prisma.event.update({
-      where: { eventId },
-      data: {
-        ...eventData,
-        members: { create: eventData.members },
-      },
-      include: { members: true },
-    });
+    return await this.prisma.$transaction(async (prisma) => {
+      const currentMembers = await prisma.member.findMany({
+        where: { eventId },
+      });
 
-    return this.toDomain(prismaEvents);
+      const updatedMemberIds = new Set(
+        eventData.members.map((m) => m.memberId)
+      );
+      const membersToDelete = currentMembers.filter(
+        (m) => !updatedMemberIds.has(m.memberId)
+      ); // 削除するメンバーの特定
+
+      // 更新するメンバーと新規メンバーの特定
+      const membersToUpdate = [];
+      const membersToAdd = [];
+
+      for (const member of eventData.members) {
+        const existingMember = currentMembers.find(
+          (m) => m.memberId === member.memberId
+        );
+        if (existingMember) {
+          membersToUpdate.push({ ...member, id: existingMember.id });
+        } else {
+          membersToAdd.push(member);
+        }
+      }
+
+      // メンバーの削除
+      await Promise.all(
+        membersToDelete.map((m) =>
+          prisma.member.delete({ where: { id: m.id } })
+        )
+      );
+
+      // メンバーの更新
+      await Promise.all(
+        membersToUpdate.map((m) =>
+          prisma.member.update({ where: { id: m.id }, data: m })
+        )
+      );
+
+      // メンバーの追加
+      await Promise.all(
+        membersToAdd.map((m) =>
+          prisma.member.create({ data: { ...m, eventId } })
+        )
+      );
+
+      // イベントの更新
+      const prismaEvent = await prisma.event.update({
+        where: { eventId },
+        data: {
+          eventName: eventData.eventName,
+          memo: eventData.memo,
+          fromDate: eventData.fromDate,
+          toDate: eventData.toDate,
+          moneyUnit: eventData.moneyUnit,
+        },
+        include: { members: true },
+      });
+
+      return this.toDomain(prismaEvent);
+    });
   }
 
   // Prisma の Event を Domain の Event に変換するためのメソッド

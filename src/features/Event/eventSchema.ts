@@ -28,6 +28,7 @@ export const createEventSchema = z
     members: z
       .array(
         z.object({
+          memberId: z.string().optional(),
           name: z
             .string()
             .min(1, "入力必須項目です。")
@@ -85,6 +86,7 @@ export const eventSchema = z
     members: z
       .array(
         z.object({
+          memberId: z.string(),
           name: z
             .string()
             .min(1, "入力必須項目です。")
@@ -149,6 +151,7 @@ export const generateEditEventSchema = (unEditableMembers: string[]) =>
       members: z
         .array(
           z.object({
+            memberId: z.string().optional(), // 新規追加のメンバーは memberId がないので、optional にする
             name: z
               .string()
               .min(1, "入力必須項目です。")
