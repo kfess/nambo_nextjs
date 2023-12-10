@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EventType } from "@/features/Event/eventSchema";
 import { Header } from "@/features/Payment/components/Header";
@@ -12,6 +12,7 @@ import { PayerName } from "@/features/Payment/components/Form/PayerName";
 import { Receiver } from "@/features/Payment/components/Form/Receiver";
 import { Money } from "@/features/Payment/components/Form/Money";
 import { InferGetServerSidePropsType } from "next";
+import { useAddPayment } from "@/features/Payment/hooks/useAddPayment";
 
 export default function PaymentNewPage({
   event,
@@ -30,16 +31,24 @@ export default function PaymentNewPage({
   } = useForm<CreatePaymentType>({
     defaultValues: {
       eventId: eventId,
+      paymentId: "", // DB で自動生成するため、空文字列
       purpose: "",
       payer: "",
       payees: [],
       cost: 0,
     },
     resolver: zodResolver(createPaymentSchema),
-    mode: "onBlur",
+    mode: "onSubmit",
     reValidateMode: "onBlur",
     criteriaMode: "all",
   });
+
+  const { mutate, isLoading, error } = useAddPayment();
+  const onSubmit: SubmitHandler<CreatePaymentType> = async (
+    data: CreatePaymentType
+  ) => {
+    mutate(data);
+  };
 
   if (!router.isReady || !event) {
     return null;
@@ -47,44 +56,44 @@ export default function PaymentNewPage({
 
   return (
     <div>
-      <form onSubmit={() => {}}></form>
-      <Header eventInfo={event} />
-      <div className="container mx-auto px-5">
-        <div className="text-center my-5 text-xl underline underline-offset-8 decoration-nambo-green decoration-4">
-          支払い情報の追加
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Header eventInfo={event} />
+        <div className="container mx-auto px-5">
+          <div className="text-center my-5 text-xl underline underline-offset-8 decoration-nambo-green decoration-4">
+            支払い情報の追加
+          </div>
+          <Purpose control={control} errors={errors} />
+          <PayerName
+            control={control}
+            errors={errors}
+            payerCandidates={event.members ?? []}
+          />
+          <Receiver
+            register={register}
+            errors={errors}
+            setValue={setValue}
+            members={event.members ?? []}
+          />
+          <Money register={register} errors={errors} />
+          <div className="flex flex-row w-full space-x-2 my-10">
+            <button
+              onClick={() => {
+                router.push(`/event/${eventId}`);
+              }}
+              className="btn w-1/2 no-animation"
+            >
+              キャンセル
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="btn bg-primary hover:bg-primary-hover text-white w-1/2 no-animation"
+            >
+              追加
+            </button>
+          </div>
         </div>
-        <Purpose control={control} errors={errors} />
-        <PayerName
-          control={control}
-          errors={errors}
-          payerCandidates={event.members ?? []}
-        />
-        <Receiver
-          register={register}
-          errors={errors}
-          setValue={setValue}
-          members={event.members ?? []}
-        />
-        <Money register={register} errors={errors} />
-        <div className="flex flex-row w-full space-x-2 my-10">
-          <button
-            onClick={() => {
-              router.push(`/event/${eventId}`);
-            }}
-            className="btn w-1/2 no-animation"
-          >
-            キャンセル
-          </button>
-          <button
-            onClick={() => {
-              router.push(`/event/${eventId}`);
-            }}
-            className="btn bg-primary hover:bg-primary-hover text-white w-1/2 no-animation"
-          >
-            追加
-          </button>
-        </div>
-      </div>
+      </form>
     </div>
   );
 }

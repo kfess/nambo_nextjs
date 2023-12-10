@@ -31,6 +31,7 @@ export const PayerName: React.FC<Props> = ({
               aria-label="支払った人"
               className="select select-bordered select-md text-base w-full"
             >
+              <option value="">--</option>
               {payerCandidates.map((member, idx) => (
                 <option key={idx} value={member.name}>
                   {member.name}

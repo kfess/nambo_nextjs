@@ -16,7 +16,7 @@ export const Money: React.FC<Props> = ({ register, errors }) => {
           なんぼ？*
         </label>
         <input
-          {...register("cost")}
+          {...register("cost", { valueAsNumber: true })}
           id="money"
           type="text"
           placeholder="1000"
