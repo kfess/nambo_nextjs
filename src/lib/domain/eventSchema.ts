@@ -178,8 +178,8 @@ export const generateEditEventSchema = (unEditableMembers: string[]) =>
         )
         .refine(
           (data) =>
-            unEditableMembers.every((name) =>
-              data.map((item) => item.name).includes(name)
+            unEditableMembers.every((memberId) =>
+              data.map((item) => item.memberId).includes(memberId)
             ),
           {
             message: "支払いに関与しているユーザーを削除することはできません。",

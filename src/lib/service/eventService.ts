@@ -53,6 +53,7 @@ export class EventService implements IEventService {
       // eventData の入力値の検証
       const validatedEventData = await validate(updateEventSchema, eventData);
 
+      console.log("validatedEventData", validatedEventData);
       return await this.eventRepository.updateEvent(eventId, {
         ...validatedEventData,
       });

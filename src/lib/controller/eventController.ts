@@ -22,7 +22,6 @@ export class EventController {
 
   async updateEvent(eventId: string, eventData: EventType) {
     try {
-      console.log("eventData", eventData);
       return await this.eventService.updateEvent(eventId, eventData);
     } catch (error: unknown) {
       console.log(error);

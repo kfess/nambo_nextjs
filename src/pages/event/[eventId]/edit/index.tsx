@@ -30,8 +30,8 @@ export default function EditEventPage({
 
   const unEditableMembers = Array.from(
     payments.reduce((set, payment) => {
-      set.add(payment.payer);
-      payment.payees.forEach((payee) => set.add(payee));
+      set.add(payment.payer.name);
+      payment.payees.forEach((payee) => set.add(payee.name));
       return set;
     }, new Set<string>())
   );
