@@ -90,10 +90,11 @@ export default function EventPage({
 }
 
 export const getServerSideProps: GetServerSideProps = async (context: any) => {
-  const eventUrl = `http://localhost:3000/api/event?eventId=${context.params?.eventId}`;
+  const { eventId } = context.params;
+  const eventUrl = `http://localhost:3000/api/event?eventId=${eventId}`;
   const eventData = (await fetch(eventUrl).then((r) => r.json())) as EventType;
 
-  const paymentUrl = "http://localhost:3000/api/payment";
+  const paymentUrl = `http://localhost:3000/api/payment?eventId=${eventId}`;
   const paymentsData = (await fetch(paymentUrl).then((r) =>
     r.json()
   )) as PaymentType[];

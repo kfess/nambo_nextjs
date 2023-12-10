@@ -15,7 +15,7 @@ export default async function handler(
   if (req.method === "GET") {
     // イベントデータの取得ハンドラー
     try {
-      const eventId = req.query.eventId;
+      const eventId = req.query.eventId; // クエリパラメータから eventId を取得
       if (typeof eventId !== "string" || !isValidUUID(eventId)) {
         res.status(400).json({ error: "Invalid eventId is specified" });
       }

@@ -27,6 +27,7 @@ export class EventController {
   async updateEvent(eventId: string, eventData: Event) {
     try {
       // eventData の入力値の検証
+      const validatedEventData = await validate(createEventSchema, eventData);
       // 支払いに関与しているユーザーは、削除できないことを検証
       return await this.eventService.updateEvent(eventId, eventData);
     } catch (error: unknown) {}

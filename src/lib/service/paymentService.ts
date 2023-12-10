@@ -1,23 +1,22 @@
-import { Payment as PrismaPayment } from "@prisma/client";
 import { IPaymentRepository } from "@/lib/repository/paymentRepository";
 import { Payment } from "@/lib/domain/payment";
-import { CreatePaymentType } from "@/lib/domain/paymentSchema";
+import { PaymentType, CreatePaymentType } from "@/lib/domain/paymentSchema";
 
 export interface IPaymentService {
-  createPayment: (paymentData: CreatePaymentType) => Promise<PrismaPayment>;
-  getPayment: (paymentId: string) => Promise<PrismaPayment | null>;
-  getPayments: (eventId: string) => Promise<PrismaPayment[]>;
+  createPayment: (paymentData: CreatePaymentType) => Promise<PaymentType>;
+  getPayment: (paymentId: string) => Promise<PaymentType | null>;
+  getPayments: (eventId: string) => Promise<PaymentType[]>;
   updatePayment: (
     paymentId: string,
     paymentData: Payment
-  ) => Promise<PrismaPayment>;
-  deletePayment: (paymentId: string) => Promise<PrismaPayment>;
+  ) => Promise<PaymentType>;
+  deletePayment: (paymentId: string) => Promise<PaymentType>;
 }
 
 export class PaymentService implements IPaymentService {
   constructor(private paymentRepository: IPaymentRepository) {}
 
-  async createPayment(paymentData: CreatePaymentType): Promise<PrismaPayment> {
+  async createPayment(paymentData: CreatePaymentType): Promise<PaymentType> {
     try {
       return await this.paymentRepository.createPayment({
         ...paymentData,
@@ -28,22 +27,22 @@ export class PaymentService implements IPaymentService {
     }
   }
 
-  async getPayment(paymentId: string): Promise<PrismaPayment | null> {
+  async getPayment(paymentId: string): Promise<PaymentType | null> {
     return await this.paymentRepository.getPayment(paymentId);
   }
 
-  async getPayments(eventId: string): Promise<PrismaPayment[]> {
+  async getPayments(eventId: string): Promise<PaymentType[]> {
     return await this.paymentRepository.getPayments(eventId);
   }
 
   async updatePayment(
     paymentId: string,
     paymentData: Payment
-  ): Promise<PrismaPayment> {
+  ): Promise<PaymentType> {
     return await this.paymentRepository.updatePayment(paymentId, paymentData);
   }
 
-  async deletePayment(paymentId: string): Promise<PrismaPayment> {
+  async deletePayment(paymentId: string): Promise<PaymentType> {
     return await this.paymentRepository.deletePayment(paymentId);
   }
 }

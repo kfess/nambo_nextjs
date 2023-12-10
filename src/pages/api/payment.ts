@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PaymentType } from "@/features/Payment/paymentFormSchema";
 import { PaymentRepository, prisma } from "@/lib/repository";
 import { PaymentService } from "@/lib/service";
 import { PaymentController } from "@/lib/controller/paymentController";
@@ -11,68 +10,42 @@ const paymentController = new PaymentController(paymentService);
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<PaymentType[]>
+  res: NextApiResponse
 ) {
+  const { eventId, paymentId } = req.query;
+
   if (req.method === "GET") {
-    // body から eventId を取得して、DB から全ての支払い情報を取得する
-    res.status(200).json([
-      {
-        eventId: "1",
-        paymentId: "1",
-        payer: "もなこちゃん",
-        purpose: "世界一周旅行",
-        payees: ["もなこくん", "もなこちゃん"],
-        cost: 400,
-      },
-      {
-        eventId: "1",
-        paymentId: "2",
-        payer: "もなこちゃん",
-        purpose: "世界一周旅行",
-        payees: ["もなこくん", "もなこちゃん"],
-        cost: 50,
-      },
-      {
-        eventId: "1",
-        paymentId: "3",
-        payer: "もなこちゃん",
-        purpose: "世界一周旅行",
-        payees: ["もなこくん", "もなこちゃん"],
-        cost: 200,
-      },
-      {
-        eventId: "1",
-        paymentId: "4",
-        payer: "もなこくん",
-        purpose: "トイレ代",
-        payees: ["もなこくん", "もなこちゃん"],
-        cost: 800,
-      },
-      {
-        eventId: "1",
-        paymentId: "5",
-        payer: "もなこくん",
-        purpose: "トイレ代",
-        payees: ["もなこちゃん"],
-        cost: 200,
-      },
-      {
-        eventId: "1",
-        paymentId: "6",
-        payer: "ゴリお",
-        purpose: "トイレ代",
-        payees: ["ぶっち"],
-        cost: 200000,
-      },
-    ]);
+    // 単一の支払いデータの取得ハンドラー
+    if (paymentId) {
+      if (typeof paymentId !== "string" || !isValidUUID(paymentId)) {
+        res.status(400).json({ error: "Invalid paymentId is specified" });
+      }
+
+      const paymentData = await paymentController.getPayment(
+        paymentId as string
+      );
+      res.status(200).json(paymentData);
+    } else if (eventId) {
+      // 複数の支払いデータの取得ハンドラー
+      if (typeof eventId !== "string" || !isValidUUID(eventId)) {
+        res.status(400).json({ error: "Invalid eventId is specified" });
+      }
+
+      const paymentData = await paymentController.getPayments(
+        eventId as string
+      );
+      res.status(200).json(paymentData);
+    }
   } else if (req.method === "POST") {
     // 支払いデータの作成ハンドラー
     try {
+      console.log(req.body);
       const createdPaymentData = await paymentController.createPayment(
         req.body
       );
       res.status(200).json(createdPaymentData);
     } catch (error: unknown) {
+      console.log("here", error);
       res.status(500).json({ error: "Unknown error" });
     }
   } else if (req.method === "PUT") {

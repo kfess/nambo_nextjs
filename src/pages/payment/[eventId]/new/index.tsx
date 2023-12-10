@@ -47,6 +47,7 @@ export default function PaymentNewPage({
 
   return (
     <div>
+      <form onSubmit={() => {}}></form>
       <Header eventInfo={event} />
       <div className="container mx-auto px-5">
         <div className="text-center my-5 text-xl underline underline-offset-8 decoration-nambo-green decoration-4">
