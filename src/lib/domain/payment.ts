@@ -4,8 +4,8 @@ export class Payment implements PaymentType {
   readonly paymentId: string;
   readonly eventId: string;
   readonly purpose: string;
-  readonly payer: { id: number; name: string };
-  readonly payees: { id: number; name: string }[];
+  readonly payer: { id: string; name: string };
+  readonly payees: { id: string; name: string }[];
   readonly cost: number;
 
   constructor(paymentData: PaymentType) {

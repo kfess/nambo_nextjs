@@ -34,7 +34,7 @@ export const PaymentByEvent: React.FC<Props> = ({ payment }) => {
           </div>
         </div>
         <div className="flex flex-row justify-between mb-1">
-          <div className="font-bold text-xl">{payment.payer}</div>
+          <div className="font-bold text-xl">{payment.payer.name}</div>
           <div className="font-bold text-xl">
             {payment.cost.toLocaleString()} 円
           </div>
@@ -42,8 +42,11 @@ export const PaymentByEvent: React.FC<Props> = ({ payment }) => {
         <div className="flex flex-row flex-wrap">
           {payment.payees.map((payee, index) => (
             <span key={index} className="flex flex-row items-center mr-2">
-              <BiSolidUser fontSize={20} className={getColorClass(payee)} />
-              <div>{payee}</div>
+              <BiSolidUser
+                fontSize={20}
+                className={getColorClass(payee.name)}
+              />
+              <div>{payee.name}</div>
             </span>
           ))}
         </div>

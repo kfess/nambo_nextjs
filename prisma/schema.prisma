@@ -17,30 +17,32 @@ model Event {
   members   Member[]
   payments  Payment[]
 }
-
 model Member {
-  id       Int    @id @default(autoincrement())
-  memberId String @default(uuid())
+  id       Int       @id @default(autoincrement())
+  memberId String    @unique @default(uuid())
   name     String
   ratio    Int
   eventId  String
-  event    Event  @relation(fields: [eventId], references: [eventId])
+  event    Event     @relation(fields: [eventId], references: [eventId])
+  payments Payment[] // Member が支払い者として関連付けられる payments
+  payees   Payee[]   // Member が受取人として関連付けられる payees
 }
 
 model Payment {
-  paymentId String    @id @default(uuid())
+  paymentId String   @id @default(uuid())
   eventId   String
   purpose   String
-  payerId   Int       // 支払い者のID
+  payerId   String      // 支払い者の Member ID
+  payer     Member   @relation(fields: [payerId], references: [memberId])
   payees    Payee[]
   cost      Int
-  event     Event     @relation(fields: [eventId], references: [eventId])
+  event     Event    @relation(fields: [eventId], references: [eventId])
 }
 
 model Payee {
-  id        Int       @id @default(autoincrement())
-  memberId  Int       // 受取人のメンバーID
+  id        Int      @id @default(autoincrement())
+  memberId  String   // 受取人の Member ID
+  member    Member   @relation(fields: [memberId], references: [memberId])
   paymentId String
-  payment   Payment   @relation(fields: [paymentId], references: [paymentId])
+  payment   Payment  @relation(fields: [paymentId], references: [paymentId])
 }
-

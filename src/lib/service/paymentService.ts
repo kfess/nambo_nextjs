@@ -1,6 +1,11 @@
 import { IPaymentRepository } from "@/lib/repository/paymentRepository";
 import { Payment } from "@/lib/domain/payment";
-import { PaymentType, CreatePaymentType } from "@/lib/domain/paymentSchema";
+import {
+  PaymentType,
+  CreatePaymentType,
+  createPaymentSchema,
+} from "@/lib/domain/paymentSchema";
+import { validate } from "@/lib/utils/validate";
 
 export interface IPaymentService {
   createPayment: (paymentData: CreatePaymentType) => Promise<PaymentType>;
@@ -18,8 +23,13 @@ export class PaymentService implements IPaymentService {
 
   async createPayment(paymentData: CreatePaymentType): Promise<PaymentType> {
     try {
+      // paymentData の入力値の検証
+      const validatedPaymentData = await validate(
+        createPaymentSchema,
+        paymentData
+      );
       return await this.paymentRepository.createPayment({
-        ...paymentData,
+        ...validatedPaymentData,
       });
     } catch (error: unknown) {
       console.log(error);
