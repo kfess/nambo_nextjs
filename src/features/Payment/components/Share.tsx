@@ -15,7 +15,7 @@ export const Share: React.FC<Props> = ({ url }) => {
   };
 
   return (
-    <div className="p-2">
+    <div className="container mx-auto p-2">
       <div className="text-right">
         <button className="btn btn-sm no-animation" onClick={onClick}>
           <span>URL を共有</span>
