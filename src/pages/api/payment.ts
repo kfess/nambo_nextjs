@@ -48,7 +48,21 @@ export default async function handler(
       res.status(500).json({ error: "Unknown error" });
     }
   } else if (req.method === "PUT") {
-    // body から eventId, paymentId を取得して、DB に支払い情報を更新する
+    const { paymentId } = req.query;
+    if (typeof paymentId !== "string" || !isValidUUID(paymentId)) {
+      res.status(400).json({ error: "Invalid paymentId is specified" });
+    }
+
+    try {
+      const updatedPaymentData = await paymentController.updatePayment(
+        paymentId as string,
+        req.body
+      );
+      res.status(200).json(updatedPaymentData);
+    } catch (error: unknown) {
+      console.log("here", error);
+      res.status(500).json({ error: "Unknown error" });
+    }
   } else if (req.method === "DELETE") {
     const { paymentId } = req.query;
     try {

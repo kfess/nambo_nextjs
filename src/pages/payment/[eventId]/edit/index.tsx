@@ -13,6 +13,7 @@ import { Purpose } from "@/features/Payment/components/Form/Purpose";
 import { PayerName } from "@/features/Payment/components/Form/PayerName";
 import { Receiver } from "@/features/Payment/components/Form/Receiver";
 import { Money } from "@/features/Payment/components/Form/Money";
+import { useUpdatePayment } from "@/features/Payment/hooks/useUpdatePayment";
 
 export default function EditPaymentPage({
   event,
@@ -24,8 +25,6 @@ export default function EditPaymentPage({
   const router = useRouter();
   const eventId = event.eventId;
 
-  console.log(payment);
-
   const {
     control,
     handleSubmit,
@@ -35,6 +34,7 @@ export default function EditPaymentPage({
   } = useForm<UpdatePaymentType>({
     defaultValues: {
       eventId: eventId,
+      paymentId: payment.paymentId,
       purpose: payment.purpose || "",
       payer: payment.payer || "",
       payees: payment.payees || [],
@@ -46,10 +46,15 @@ export default function EditPaymentPage({
     criteriaMode: "all",
   });
 
+  const { mutate } = useUpdatePayment();
+  const onSubmit = async (data: UpdatePaymentType) => {
+    mutate(data);
+  };
+
   return (
     <div>
       <Header eventInfo={event} />
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="container mx-auto px-5">
           <div className="text-center my-5 text-xl underline underline-offset-8 decoration-nambo-green decoration-4">
             支払い情報の更新
@@ -80,9 +85,6 @@ export default function EditPaymentPage({
             <button
               type="submit"
               disabled={isSubmitting}
-              onClick={() => {
-                router.push(`/event/${eventId}`);
-              }}
               className="btn bg-primary hover:bg-primary-hover text-white w-1/2 no-animation"
             >
               更新

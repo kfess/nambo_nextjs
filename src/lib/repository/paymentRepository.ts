@@ -70,23 +70,34 @@ export class PaymentRepository implements IPaymentRepository {
     paymentId: string,
     paymentData: Payment
   ): Promise<PaymentType> {
-    const prismaPayment = await this.prisma.payment.update({
-      where: { paymentId },
-      data: {
-        eventId: paymentData.eventId,
-        purpose: paymentData.purpose,
-        payerId: paymentData.payer.id,
-        payees: {
-          create: paymentData.payees.map((payee) => ({
-            memberId: payee.id,
-          })),
+    const updatedPayment = await this.prisma.$transaction(async (prisma) => {
+      await this.prisma.payee.deleteMany({
+        where: { paymentId },
+      });
+
+      const prismaPayment = await this.prisma.payment.update({
+        where: { paymentId },
+        data: {
+          eventId: paymentData.eventId,
+          purpose: paymentData.purpose,
+          payerId: paymentData.payer.id,
+          payees: {
+            create: paymentData.payees.map((payee) => ({
+              memberId: payee.id,
+            })),
+          },
+          cost: paymentData.cost,
         },
-        cost: paymentData.cost,
-      },
-      include: { payees: true },
+        include: {
+          payer: true,
+          payees: { include: { member: true } },
+        },
+      });
+
+      return prismaPayment;
     });
 
-    return this.toDomain(prismaPayment);
+    return this.toDomain(updatedPayment);
   }
 
   async deletePayment(paymentId: string): Promise<PaymentType> {
