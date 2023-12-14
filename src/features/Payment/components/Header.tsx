@@ -6,6 +6,7 @@ import { BiSolidCalendarStar } from "react-icons/bi";
 import { TbMoneybag } from "react-icons/tb";
 import { EventType } from "@/features/Event/eventSchema";
 import { getColorClass } from "@/helpers/color";
+import { formatDate } from "@/helpers/format";
 
 type Props = {
   eventInfo: EventType;
@@ -29,7 +30,8 @@ export const Header: React.FC<Props> = ({ eventInfo }) => {
             <div className="flex flex-row items-center mb-1  pl-1">
               <BiSolidCalendarStar fontSize={20} className="text-gray-600" />
               <div className="text-sm pl-1">
-                {eventInfo.fromDate} ~ {eventInfo.toDate}
+                {formatDate(eventInfo.fromDate)} ~{" "}
+                {formatDate(eventInfo.toDate)}
               </div>
             </div>
             <div className="flex flex-wrap mb-1 pl-1">
@@ -45,7 +47,7 @@ export const Header: React.FC<Props> = ({ eventInfo }) => {
             </div>
             <div className="flex flex-row items-center pl-1">
               <TbMoneybag fontSize={20} className="text-gray-600" />
-              <div className="text-sm pl-1">
+              <div className="text-sm pl-1 ">
                 {eventInfo.moneyUnit} 円単位で精算
               </div>
             </div>

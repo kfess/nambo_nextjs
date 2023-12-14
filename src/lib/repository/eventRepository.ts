@@ -2,6 +2,7 @@ import { PrismaClient, Event as PrismaEvent } from "@prisma/client";
 import { Event } from "@/lib/domain/event";
 import { EventType } from "@/lib/domain/eventSchema";
 import { MoneyUnit, Member } from "@/lib/domain/eventSchema";
+import { formatDate } from "@/helpers/format";
 
 export interface IEventRepository {
   createEvent: (eventData: Event) => Promise<EventType>;
@@ -114,8 +115,8 @@ export class EventRepository implements IEventRepository {
       eventId: prismaEvent.eventId,
       eventName: prismaEvent.eventName,
       memo: prismaEvent.memo,
-      fromDate: prismaEvent.fromDate.toISOString(),
-      toDate: prismaEvent.toDate.toISOString(),
+      fromDate: formatDate(prismaEvent.fromDate.toISOString()),
+      toDate: formatDate(prismaEvent.toDate.toISOString()),
       members: prismaEvent.members,
       moneyUnit: prismaEvent.moneyUnit as MoneyUnit,
     });
