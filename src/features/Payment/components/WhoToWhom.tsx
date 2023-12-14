@@ -22,6 +22,10 @@ export const WhoToWhom: React.FC<Props> = ({
   members,
   moneyUnit,
 }) => {
+  if (payments.length === 0) {
+    return null;
+  }
+
   const data = calcPayBackMoney(calcPaymentByTotalAction(payments, members));
   const groupedData = data.reduce(
     (acc, curr) => {

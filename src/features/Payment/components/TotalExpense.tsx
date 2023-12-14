@@ -9,6 +9,10 @@ type Props = {
 };
 
 export const TotalExpense: React.FC<Props> = ({ payments, members }) => {
+  if (payments.length === 0) {
+    return null;
+  }
+
   const uniqueNames = Array.from(members.map((member) => member.name));
   const payerCost = payments.reduce(
     (prev, cur) => {

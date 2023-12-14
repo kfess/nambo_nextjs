@@ -75,9 +75,11 @@ export class PaymentRepository implements IPaymentRepository {
       data: {
         eventId: paymentData.eventId,
         purpose: paymentData.purpose,
-        payer: paymentData.payer,
+        payerId: paymentData.payer.id,
         payees: {
-          create: paymentData.payees.map((payee) => ({ name: payee })),
+          create: paymentData.payees.map((payee) => ({
+            memberId: payee.id,
+          })),
         },
         cost: paymentData.cost,
       },

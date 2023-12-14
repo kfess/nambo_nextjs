@@ -27,6 +27,7 @@ export const PaymentByEvent: React.FC<Props> = ({ payment }) => {
           <div className="text-gray-500">{payment.purpose}</div>
           <div className="flex flex-row space-x-2">
             <button
+              type="button"
               onClick={() => {
                 router.push(
                   `/payment/${eventId}/edit?paymentId=${payment.paymentId}`
