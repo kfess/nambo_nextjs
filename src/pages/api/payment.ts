@@ -18,23 +18,32 @@ export default async function handler(
     // 単一の支払いデータの取得ハンドラー
     if (paymentId) {
       if (typeof paymentId !== "string" || !isValidUUID(paymentId)) {
-        res.status(400).json({ error: "Invalid paymentId is specified" });
+        return res
+          .status(400)
+          .json({ error: "Invalid paymentId is specified" });
       }
 
-      const paymentData = await paymentController.getPayment(
-        paymentId as string
-      );
-      res.status(200).json(paymentData);
+      try {
+        const paymentData = await paymentController.getPayment(
+          paymentId as string
+        );
+        return res.status(200).json(paymentData);
+      } catch (error: unknown) {
+        res.status(500).json({ error: "Unknown error" });
+      }
     } else if (eventId) {
       // 複数の支払いデータの取得ハンドラー
       if (typeof eventId !== "string" || !isValidUUID(eventId)) {
-        res.status(400).json({ error: "Invalid eventId is specified" });
+        return res.status(400).json({ error: "Invalid eventId is specified" });
       }
-
-      const paymentData = await paymentController.getPayments(
-        eventId as string
-      );
-      res.status(200).json(paymentData);
+      try {
+        const paymentData = await paymentController.getPayments(
+          eventId as string
+        );
+        return res.status(200).json(paymentData);
+      } catch (error: unknown) {
+        return res.status(500).json({ error: "Unknown error" });
+      }
     }
   } else if (req.method === "POST") {
     // 支払いデータの作成ハンドラー

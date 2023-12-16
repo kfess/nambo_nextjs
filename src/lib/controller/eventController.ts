@@ -9,6 +9,7 @@ export class EventController {
       return await this.eventService.createEvent(eventData);
     } catch (error: unknown) {
       console.log(error);
+      throw new Error("");
     }
   }
 
@@ -16,7 +17,7 @@ export class EventController {
     try {
       return await this.eventService.getEvent(eventId);
     } catch (error: unknown) {
-      console.log(error);
+      throw new Error("");
     }
   }
 
@@ -25,6 +26,7 @@ export class EventController {
       return await this.eventService.updateEvent(eventId, eventData);
     } catch (error: unknown) {
       console.log(error);
+      throw new Error("");
     }
   }
 }

@@ -1,3 +1,5 @@
+import { ZodError } from "zod";
+import { AxiosError } from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
@@ -8,18 +10,26 @@ import { PaymentByEvent } from "@/features/Payment/components/PaymentByEvent";
 import { WhoToWhom } from "@/features/Payment/components/WhoToWhom";
 import { TotalExpense } from "@/features/Payment/components/TotalExpense";
 import { Share } from "@/features/Payment/components/Share";
+import { fetchEvent } from "@/features/Event/api/fetchEvent";
+import { fetchPayments } from "@/features/Payment/api/fetchPayments";
+import { ERROR_MESSAGES, UnknownError } from "@/helpers/error";
 
 export default function EventPage({
   event,
   payments,
+  error,
 }: InferGetServerSidePropsType<typeof getServerSideProps> & {
   event: EventType;
   payments: PaymentType[];
+  error: string;
 }) {
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   const router = useRouter();
   const thisURL = `http://localhost:3000${router.asPath}`;
 
-  console.log(payments);
   const [selectedTab, setSelectedTab] = useState(1);
 
   return (
@@ -74,12 +84,13 @@ export default function EventPage({
         )}
         {selectedTab === 1 && (
           <>
-            {payments.map((payment) => (
-              <div key={payment.paymentId}>
-                <PaymentByEvent key={payment.paymentId} payment={payment} />
-                <div className="divider" />
-              </div>
-            ))}
+            {payments &&
+              payments.map((payment) => (
+                <div key={payment.paymentId}>
+                  <PaymentByEvent key={payment.paymentId} payment={payment} />
+                  <div className="divider" />
+                </div>
+              ))}
           </>
         )}
         {selectedTab === 2 && (
@@ -92,18 +103,31 @@ export default function EventPage({
 
 export const getServerSideProps: GetServerSideProps = async (context: any) => {
   const { eventId } = context.params;
-  const eventUrl = `http://localhost:3000/api/event?eventId=${eventId}`;
-  const eventData = (await fetch(eventUrl).then((r) => r.json())) as EventType;
-
-  const paymentUrl = `http://localhost:3000/api/payment?eventId=${eventId}`;
-  const paymentsData = (await fetch(paymentUrl).then((r) =>
-    r.json()
-  )) as PaymentType[];
-
   try {
-    return { props: { event: eventData, payments: paymentsData } };
-    // return { props: { event: eventData, payments: [] } };
-  } catch (error) {
-    return { props: { event: null, payments: null } };
+    const [event, payments] = await Promise.all([
+      fetchEvent(eventId), // イベント情報の取得
+      fetchPayments(eventId), // 支払い情報の取得
+    ]);
+    return { props: { event, payments } };
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      const statusCode = error.response?.status;
+      if (!statusCode) {
+        throw new UnknownError();
+      }
+      switch (statusCode) {
+        case 400:
+          return { props: { error: ERROR_MESSAGES["400"] } };
+        case 404:
+          return { notFound: true };
+        case 500:
+          throw new Error(ERROR_MESSAGES["500"]);
+        default:
+          return { props: { error: ERROR_MESSAGES.UNKNOWN_ERROR } };
+      }
+    } else if (error instanceof ZodError) {
+      return { props: { error: ERROR_MESSAGES.VALIDATION_ERROR } };
+    }
+    throw new UnknownError();
   }
 };

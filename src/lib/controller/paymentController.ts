@@ -18,17 +18,24 @@ export class PaymentController {
       );
       return await this.paymentService.createPayment(validatedPaymentData);
     } catch (error: unknown) {
-      console.log(error);
       throw new Error("");
     }
   }
 
   async getPayment(paymentId: string) {
-    return await this.paymentService.getPayment(paymentId);
+    try {
+      return await this.paymentService.getPayment(paymentId);
+    } catch (error: unknown) {
+      throw new Error("");
+    }
   }
 
   async getPayments(eventId: string) {
-    return await this.paymentService.getPayments(eventId);
+    try {
+      return await this.paymentService.getPayments(eventId);
+    } catch (error: unknown) {
+      throw new Error("");
+    }
   }
 
   async updatePayment(paymentId: string, paymentData: Payment) {
