@@ -53,15 +53,17 @@ export class EventService implements IEventService {
       // eventData の入力値の検証
       const validatedEventData = await validate(updateEventSchema, eventData);
 
-      console.log("validatedEventData", validatedEventData);
       return await this.eventRepository.updateEvent(eventId, {
         ...validatedEventData,
+        fromDate: new Date(validatedEventData.fromDate).toISOString(),
+        toDate: new Date(validatedEventData.toDate).toISOString(),
       });
     } catch (error: unknown) {
       if (error instanceof ZodError) {
         console.log(error);
         throw new Error("");
       }
+      console.log("error!", error);
       throw new Error("");
     }
   }

@@ -25,7 +25,7 @@ export class EventController {
     try {
       return await this.eventService.updateEvent(eventId, eventData);
     } catch (error: unknown) {
-      console.log(error);
+      console.log("here", error);
       throw new Error("");
     }
   }

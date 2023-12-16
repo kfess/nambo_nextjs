@@ -13,6 +13,7 @@ import { Share } from "@/features/Payment/components/Share";
 import { fetchEvent } from "@/features/Event/api/fetchEvent";
 import { fetchPayments } from "@/features/Payment/api/fetchPayments";
 import { ERROR_MESSAGES, UnknownError } from "@/helpers/error";
+import { NoDataBlock } from "@/components/shared/NoDataBlock";
 
 export default function EventPage({
   event,
@@ -80,21 +81,33 @@ export default function EventPage({
                 moneyUnit={event.moneyUnit}
               />
             )}
+            {payments.length === 0 && (
+              <NoDataBlock message="支払い情報がありません。" />
+            )}
           </>
         )}
         {selectedTab === 1 && (
           <>
-            {payments &&
+            {payments.length > 0 ? (
               payments.map((payment) => (
                 <div key={payment.paymentId}>
                   <PaymentByEvent key={payment.paymentId} payment={payment} />
                   <div className="divider" />
                 </div>
-              ))}
+              ))
+            ) : (
+              <NoDataBlock message="支払い情報がありません。" />
+            )}
           </>
         )}
         {selectedTab === 2 && (
-          <TotalExpense payments={payments} members={event.members} />
+          <>
+            {payments.length > 0 ? (
+              <TotalExpense payments={payments} members={event.members} />
+            ) : (
+              <NoDataBlock message="支払い情報がありません。" />
+            )}
+          </>
         )}
       </div>
     </>
